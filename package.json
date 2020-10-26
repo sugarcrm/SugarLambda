@@ -1,13 +1,16 @@
 {
-    "name": "replaced-by-user-input",
-    "description": "replaced-by-user-input",
+    "name": "sugar-lambda",
+    "description": "Lambda functions for SugarLive",
     "version": "0.0.1",
     "private": true,
-    "dependencies": {},
+    "dependencies": {
+      "axios": "^0.21.0",
+      "underscore": "^1.11.0"
+    },
     "devDependencies": {
         "jest": "^24.7.1"
     },
     "scripts": {
-        "test": "jest"
+        "test": "jest  --watchAll"
     }
 }

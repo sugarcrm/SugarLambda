@@ -1,3 +1,8 @@
 node_modules
-package-lock.json
+npm-debug.log
+samconfig.toml
+env.json
 .project
+.settings
+.DS_Store
+.aws-sam

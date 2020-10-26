@@ -12,21 +12,41 @@ Description: >-
 Transform:
 - AWS::Serverless-2016-10-31
 
+# Environment variables
+Parameters:
+  SugarUsername:
+    Type: String
+    Default: ''
+    Description: Sugar Username for Authentication with Lambda
+  SugarPassword:
+    Type: String
+    Default: ''
+    Description: Sugar Password for Authentication with Lambda
+  SugarUrl:
+    Type: String
+    Default: ''
+    Description: URL of your Sugar Instance
+
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
 Resources:
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
-  # This is a Lambda function config associated with the source code: hello-from-lambda.js
-  helloFromLambdaFunction:
+  # This is a Lambda function config associated with the source code: create-case.js
+  CreateCaseFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: src/handlers/hello-from-lambda.helloFromLambdaHandler
+      Handler: src/handlers/create-case.createCaseHandler
       Runtime: nodejs12.x
       MemorySize: 128
       Timeout: 100
-      Description: A Lambda function that returns a static string.
+      Environment:
+        Variables:
+          sugarUsername: !Ref SugarUsername
+          sugarPass: !Ref SugarPassword
+          sugarUrl: !Ref SugarUrl
+      Description: A Lambda function that creates a case.
       Policies:
-        # Give Lambda basic execution Permission to the helloFromLambda
+        # Give Lambda basic execution Permission to createCase
         - AWSLambdaBasicExecutionRole
