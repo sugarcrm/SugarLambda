@@ -27,14 +27,10 @@ const methodToRequest = {
 
 module.exports = () => {
     const serverUrl = (process.env.sugarUrl || 'localhost') + '/rest/v11_10';
-    const platform = process.env.platform || '';
-    const clientID = process.env.clientID || 'sugar';
     const username = process.env.sugarUsername || '';
     const password = process.env.sugarPass || '';
 
     return {
-        clientID: clientID,
-
         serverUrl: serverUrl,
 
         buildUrl: function(path) {
@@ -45,11 +41,11 @@ module.exports = () => {
             try {
                 let response = await axios.post(this.buildUrl('oauth2/token'), {
                     grant_type: 'password',
-                    client_id: clientID,
+                    client_id: 'sugar',
                     client_secret: '',
                     username: username,
                     password: password,
-                    platform: platform
+                    platform: ''
                 });
                 if (!(response && response.data && response.data.access_token)) {
                     return {

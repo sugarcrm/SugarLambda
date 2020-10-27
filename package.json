@@ -1,16 +1,24 @@
 {
-    "name": "sugar-lambda",
-    "description": "Lambda functions for SugarLive",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-      "axios": "^0.21.0",
-      "underscore": "^1.11.0"
-    },
-    "devDependencies": {
-        "jest": "^24.7.1"
-    },
-    "scripts": {
-        "test": "jest  --watchAll"
-    }
+  "name": "sugar-lambda",
+  "description": "Lambda functions for SugarLive",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.21.0",
+    "underscore": "^1.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.12.1",
+    "eslint-config-standard": "^15.0.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.2",
+    "eslint-plugin-jest": "^24.1.0",
+    "jest": "^24.7.1"
+  },
+  "scripts": {
+    "test": "jest  --watchAll",
+    "lint": "eslint ./src ./__tests__"
+  }
 }

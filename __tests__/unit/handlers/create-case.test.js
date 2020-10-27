@@ -20,13 +20,13 @@ jest.mock('../../../src/core/bean.js', () => () => ({
             data: {
                 name: 'test'
             }
-        }
+        };
     }
 }));
 
 // This includes all tests for createCaseHandler()
-describe('Test for create-case', function () {
-    // This test invokes createCaseHandler() and compare the result 
+describe('Test for create-case', function() {
+    // This test invokes createCaseHandler() and compare the result
     it('Verifies successful response', async () => {
         // Input
         const evt = {
