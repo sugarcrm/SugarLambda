@@ -48,5 +48,23 @@ Resources:
           sugarUrl: !Ref SugarUrl
       Description: A Lambda function that creates a case.
       Policies:
+        # Give Lambda basic execution Permission to write CloudWatch logs
+        - AWSLambdaBasicExecutionRole
+
+  # This is a Lambda function config for source code: case-status.js
+  CaseStatusFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: AWS Lambda Function to get case status by case number
+      Handler: 'src/handlers/case-status.handler'
+      Runtime: 'nodejs12.x'
+      MemorySize: 128
+      Timeout: 60
+      Environment:
+        Variables:
+          sugarUsername: !Ref SugarUsername
+          sugarPass: !Ref SugarPassword
+          sugarUrl: !Ref SugarUrl
+      Policies:
         # Give Lambda basic execution Permission to createCase
         - AWSLambdaBasicExecutionRole
