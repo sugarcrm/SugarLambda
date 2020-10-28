@@ -11,12 +11,7 @@
 
 const axios = require('axios');
 
-const HttpStatus = {
-    ok: 200,
-    authFailure: 401,
-    notFound: 404,
-    error: 500
-};
+const { HttpStatus } = require('../utils/http-status.js');
 
 const methodToRequest = {
     'read': 'GET',

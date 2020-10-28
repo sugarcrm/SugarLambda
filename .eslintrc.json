@@ -22,6 +22,7 @@
             "asyncArrow": "always"
         }],
         "quote-props": ["off", "always"],
-        "dot-notation": ["off", "always"]
+        "dot-notation": ["off", "always"],
+        "no-var": "error"
     }
 }

@@ -16,10 +16,7 @@ const app = require('../core/app.js');
 /**
  * HTTP status codes used in this function
  */
-const HttpStatus = {
-    ok: 200,
-    notFound: 404,
-};
+const { HttpStatus } = require('../utils/http-status');
 /**
  * Sugar Instance URL
  */
@@ -28,7 +25,7 @@ const baseUrl = process.env.sugarUrl;
 /**
  * Lambda function to get case status based on case number sent via Contact Flow's Invoke Lambda
  * Function block.
- * @param {Object} event 
+ * @param {Object} event
  */
 const handler = async (event) => {
     const queryParams = {
@@ -36,7 +33,7 @@ const handler = async (event) => {
     };
     const caseNumber = event.Details.Parameters.caseNumber;
     const filterUrl = encodeURI(`${baseUrl}/rest/v11_10/Cases?filter[0][case_number]=${caseNumber}`);
-    let response = await app.api.call('read', filterUrl, null, queryParams);
+    const response = await app.api.call('read', filterUrl, null, queryParams);
 
     const caseBean = response.data.records[0];
     let statusCode = HttpStatus.notFound;

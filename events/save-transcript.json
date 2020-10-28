@@ -1,0 +1,38 @@
+{
+  "Records": [
+    {
+      "eventVersion": "2.1",
+      "eventSource": "aws:s3",
+      "awsRegion": "us-east-1",
+      "eventTime": "2020-10-26T18:25:55.516Z",
+      "eventName": "ObjectCreated:Put",
+      "userIdentity": {
+        "principalId": "AWS:AIDA5CCDZW4MRSCLDY7UR"
+      },
+      "requestParameters": {
+        "sourceIPAddress": "68.73.117.169"
+      },
+      "responseElements": {
+        "x-amz-request-id": "6392D2FE18F780C1",
+        "x-amz-id-2": "lJ45peuTi9s5Ffx7K6uljzZjySzgtGK38tKxiInIIL3QgumvIgEhFgdbwpbkGuGHEarfh8r8blscrtzc0hpoiwCPcVWJituMA+jgbaXS+rw="
+      },
+      "s3": {
+        "s3SchemaVersion": "1.0",
+        "configurationId": "transcriptNotifyEvent",
+        "bucket": {
+          "name": "connect-6a8d34621f87",
+          "ownerIdentity": {
+            "principalId": "AW0EZPYKZ1NJM"
+          },
+          "arn": "arn:aws:s3:::connect-6a8d34621f87"
+        },
+        "object": {
+          "key": "Analysis/Voice/2020/10/28/e2etest.json",
+          "size": 34442,
+          "eTag": "8f3fe4ffaa7410d8a315901cd3295339",
+          "sequencer": "005F9714B51413EDF5"
+        }
+      }
+    }
+  ]
+}

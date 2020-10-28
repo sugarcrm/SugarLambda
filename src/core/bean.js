@@ -29,6 +29,7 @@ module.exports = (module, data) => {
         save: async function() {
             let method = this.get('id') ? 'update' : 'create';
             let url = api.buildUrl(this.module);
+            url += this.get('id') ? `/${this.get('id')}` : '';
             let response = await api.call(method, url, this.attributes);
             if (response.data) {
                 _.extend(this.attributes, response.data);
