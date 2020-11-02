@@ -41,4 +41,36 @@ async function getJsonFromS3Event(event) {
     return JSON.parse(s3Object.Body.toString('utf-8'));
 }
 
-module.exports = { getJsonFromS3Event };
+/**
+ * Get the object key from the S3 trigger event and decode it
+ *
+ * @param {Object} event S3 trigger event
+ */
+function getObjectKeyFromS3Event (event) {
+    let key =  event.Records[0].s3.object.key;
+    return decodeURIComponent(key.replace(/\+/g, ' '));
+}
+
+/**
+ * Get the AWS Connect Contact ID from the S3 object key. Return false
+ * if undefined
+ *
+ * The object key is formed like: connect/path/to/file/contact-id_time.ext
+ *
+ * @param {string} objectKey
+ */
+function getAwsConnectContactIdFromS3Key (objectKey) {
+    let fileName = objectKey.split('/').pop();
+
+    if (!fileName) {
+        return false;
+    }
+
+    return fileName.split('_')[0];
+}
+
+module.exports = {
+    getJsonFromS3Event,
+    getObjectKeyFromS3Event,
+    getAwsConnectContactIdFromS3Key
+};

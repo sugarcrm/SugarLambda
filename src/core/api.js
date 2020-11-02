@@ -11,7 +11,7 @@
 
 const axios = require('axios');
 
-const { HttpStatus } = require('../utils/http-status.js');
+const { HttpStatus } = require('../constants/http-status.js');
 
 const methodToRequest = {
     'read': 'GET',
