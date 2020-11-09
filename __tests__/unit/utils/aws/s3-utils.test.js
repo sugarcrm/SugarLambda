@@ -49,16 +49,16 @@ describe('Tests getObjectKeyFromS3Event', function() {
     it('should get the object key from S3 trigger event', async () => {
         let testKey = 'test_key';
         let event = {
-            "Records": [
+            'Records': [
                 {
-                    "s3": {
-                        "object": {
-                            "key": testKey
+                    's3': {
+                        'object': {
+                            'key': testKey
                         }
                     }
                 }
             ]
-        }
+        };
 
         expect(s3Utils.getObjectKeyFromS3Event(event)).toEqual(testKey);
     });
@@ -73,6 +73,6 @@ describe('Tests getAwsConnectContactIdFromS3Key', function() {
             '123-abc_20201102T15%3A11_UTC.wav', '123-abc'
         ]
     ])('should get AWS Connect contact ID from S3 object key', (key, expected) => {
-         expect(s3Utils.getAwsConnectContactIdFromS3Key(key)).toEqual(expected);
+        expect(s3Utils.getAwsConnectContactIdFromS3Key(key)).toEqual(expected);
     });
 });
