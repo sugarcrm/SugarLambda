@@ -30,6 +30,14 @@ Parameters:
     Type: String
     Default: ''
     Description: AWS Connect instance name
+  ContactFlowId:
+    Type: String
+    Description: The contact flow id that the customer will interact with while chatting
+    AllowedPattern: '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'
+  InstanceId:
+    Type: String
+    Description: The instance id of the Amazon Connect instance that the customer will interact with while chatting
+    AllowedPattern: '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'
 
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
@@ -104,6 +112,28 @@ Resources:
           sugarUrl: !Ref SugarUrl
           awsConnectInstance: !Ref AwsConnectInstance
 
+  # Function to start connect Chat from API call
+  StartChatFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: AWS Lambda Function to start chat from incoming API call
+      Handler: 'src/handlers/start-chat.handler'
+      Runtime: 'nodejs12.x'
+      MemorySize: 128
+      Role: !GetAtt StartChatLambdaExecutionRole.Arn
+      Timeout: 60
+      Environment:
+        Variables:
+          instanceId: !Ref InstanceId
+          contactFlowId: !Ref ContactFlowId
+      Events:
+        GetRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref StartChatApiGateway
+            Path: /
+            Method: post
+
   # Role to combine S3, CloudWatch, and Basic Lambda permissions for saving
   s3CloudwatchLambdaExecutionRole:
     Type: "AWS::IAM::Role"
@@ -122,3 +152,41 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
         - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
         - "arn:aws:iam::aws:policy/AWSLambdaExecute"
+
+  # Role to give StartChat lambda access to the client amazon connect instance
+  StartChatLambdaExecutionRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      Policies:
+        - PolicyName: start-chat-contact-execution-policy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*"
+              - Effect: "Allow"
+                Action:
+                  - "connect:StartChatContact"
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${InstanceId}"
+                  - !Sub "arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${InstanceId}/*"
+
+  StartChatApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod

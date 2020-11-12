@@ -46,8 +46,8 @@ async function getJsonFromS3Event(event) {
  *
  * @param {Object} event S3 trigger event
  */
-function getObjectKeyFromS3Event (event) {
-    let key =  event.Records[0].s3.object.key;
+function getObjectKeyFromS3Event(event) {
+    let key = event.Records[0].s3.object.key;
     return decodeURIComponent(key.replace(/\+/g, ' '));
 }
 
@@ -59,7 +59,7 @@ function getObjectKeyFromS3Event (event) {
  *
  * @param {string} objectKey
  */
-function getAwsConnectContactIdFromS3Key (objectKey) {
+function getAwsConnectContactIdFromS3Key(objectKey) {
     let fileName = objectKey.split('/').pop();
 
     if (!fileName) {
