@@ -6,3 +6,4 @@ env.json
 .settings
 .DS_Store
 .aws-sam
+.vscode/

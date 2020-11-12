@@ -1,0 +1,186 @@
+{
+  "transcript": {
+      "Version": "1.1.0",
+      "AccountId": "897790359321",
+      "Channel": "VOICE",
+      "ContentMetadata": {
+        "Output": "Raw"
+      },
+      "JobStatus": "COMPLETED",
+      "LanguageCode": "en-US",
+      "Participants": [
+        {
+          "ParticipantId": "CUSTOMER",
+          "ParticipantRole": "CUSTOMER"
+        },
+        {
+          "ParticipantId": "AGENT",
+          "ParticipantRole": "AGENT"
+        }
+      ],
+      "Categories": {
+        "MatchedCategories": [],
+        "MatchedDetails": {}
+      },
+      "ConversationCharacteristics": {
+        "TotalConversationDurationMillis": 24100,
+        "Sentiment": {
+          "OverallSentiment": {
+            "AGENT": 0,
+            "CUSTOMER": 0
+          },
+          "SentimentByPeriod": {
+            "QUARTER": {
+              "AGENT": [
+                {
+                  "BeginOffsetMillis": 0,
+                  "EndOffsetMillis": 5325,
+                  "Score": 0
+                },
+                {
+                  "BeginOffsetMillis": 5325,
+                  "EndOffsetMillis": 10650,
+                  "Score": 0
+                },
+                {
+                  "BeginOffsetMillis": 10650,
+                  "EndOffsetMillis": 15975,
+                  "Score": 0
+                },
+                {
+                  "BeginOffsetMillis": 15975,
+                  "EndOffsetMillis": 21300,
+                  "Score": 0
+                }
+              ],
+              "CUSTOMER": [
+                {
+                  "BeginOffsetMillis": 0,
+                  "EndOffsetMillis": 6025,
+                  "Score": 0
+                },
+                {
+                  "BeginOffsetMillis": 6025,
+                  "EndOffsetMillis": 12050,
+                  "Score": 0
+                },
+                {
+                  "BeginOffsetMillis": 12050,
+                  "EndOffsetMillis": 18075,
+                  "Score": 0
+                },
+                {
+                  "BeginOffsetMillis": 18075,
+                  "EndOffsetMillis": 24100,
+                  "Score": 0
+                }
+              ]
+            }
+          }
+        },
+        "Interruptions": {
+          "InterruptionsByInterrupter": {},
+          "TotalCount": 0,
+          "TotalTimeMillis": 0
+        },
+        "NonTalkTime": {
+          "TotalTimeMillis": 3980,
+          "Instances": [
+            {
+              "BeginOffsetMillis": 8820,
+              "DurationMillis": 3980,
+              "EndOffsetMillis": 12800
+            }
+          ]
+        },
+        "TalkSpeed": {
+          "DetailsByParticipant": {
+            "AGENT": {
+              "AverageWordsPerMinute": 105
+            },
+            "CUSTOMER": {
+              "AverageWordsPerMinute": 82
+            }
+          }
+        },
+        "TalkTime": {
+          "TotalTimeMillis": 4659,
+          "DetailsByParticipant": {
+            "AGENT": {
+              "TotalTimeMillis": 1719
+            },
+            "CUSTOMER": {
+              "TotalTimeMillis": 2940
+            }
+          }
+        }
+      },
+      "CustomModels": [],
+      "Transcript": [
+        {
+          "BeginOffsetMillis": 8090,
+          "Content": "Hello.",
+          "EndOffsetMillis": 8820,
+          "Id": "675388d0-8349-4b75-8345-ccb444cf8b5b",
+          "ParticipantId": "CUSTOMER",
+          "Sentiment": "NEUTRAL",
+          "LoudnessScore": [
+            77.46
+          ]
+        },
+        {
+          "BeginOffsetMillis": 12800,
+          "Content": "Hello again.",
+          "EndOffsetMillis": 13770,
+          "Id": "7c6bff6a-b1f8-4da7-a41e-2ba07ad98978",
+          "ParticipantId": "AGENT",
+          "Sentiment": "NEUTRAL",
+          "LoudnessScore": [
+            0,
+            84.88
+          ]
+        },
+        {
+          "BeginOffsetMillis": 16379,
+          "Content": "Hello again.",
+          "EndOffsetMillis": 17770,
+          "Id": "e751b89c-c3d3-445a-b3db-01b17c4196de",
+          "ParticipantId": "CUSTOMER",
+          "Sentiment": "NEUTRAL",
+          "LoudnessScore": [
+            74.07,
+            75.24
+          ]
+        },
+        {
+          "BeginOffsetMillis": 20550,
+          "Content": "Goodbye.",
+          "EndOffsetMillis": 21300,
+          "Id": "61212859-ee9a-46b9-b1f3-7293ac160358",
+          "ParticipantId": "AGENT",
+          "Sentiment": "NEUTRAL",
+          "LoudnessScore": [
+            80.77,
+            80.17
+          ]
+        },
+        {
+          "BeginOffsetMillis": 23280,
+          "Content": "Goodbye.",
+          "EndOffsetMillis": 24100,
+          "Id": "4999ac32-03d6-49b4-999e-236058ad2539",
+          "ParticipantId": "CUSTOMER",
+          "Sentiment": "NEUTRAL",
+          "LoudnessScore": [
+            73.49,
+            71.66
+          ]
+        }
+      ],
+      "CustomerMetadata": {
+        "InputS3Uri": "s3://connect-6a8d34621f87/connect/jwelborn-sugar/CallRecordings/2020/10/26/5f6ce92a-3c66-43c2-bf7b-1259747e4e7e_20201026T16:37_UTC.wav",
+        "ContactId": "5f6ce92a-3c66-43c2-bf7b-1259747e4e7e",
+        "InstanceId": "403a85fe-dd62-4e10-94ca-00691c35cf31"
+      }
+  }      
+}
