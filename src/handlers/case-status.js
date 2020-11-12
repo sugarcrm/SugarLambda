@@ -16,7 +16,7 @@ const app = require('../core/app.js');
 /**
  * HTTP status codes used in this function
  */
-const { HttpStatus } = require('../utils/http-status');
+const { HttpStatus } = require('../constants/http-status');
 /**
  * Sugar Instance URL
  */

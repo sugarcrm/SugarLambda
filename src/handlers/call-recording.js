@@ -14,39 +14,30 @@ const app = require('../core/app.js');
 /**
  * Utils
  */
-const s3Utils = require('../utils/aws/s3-utils');
-const utils = require('../utils/utils');
 const loggerUtils = require('../utils/logger-utils');
+const s3Utils = require('../utils/aws/s3-utils');
 const callRecordingUtils = require('../utils/sugar/call-record-utils');
 
 /**
  * Defined constants
  */
-const { HttpStatus } = require('../constants/http-status.js');
 const ErrorMessages = require('../constants/messages/error');
 const CallsConstants = require('../constants/sugar-modules/calls');
+const { HttpStatus } = require('../constants/http-status.js');
 
 /**
- * Function to update a call with transcript once the transcript is
- * uploaded to S3.
+ * Function to update a call record's call recording URL when the 
+ * audio file is ready
  *
- * @param {Object} event S3 Event that invokes this function
+ * @param {Object} event the S3 trigger event
  */
 const handler = async (event) => {
-    // Log S3 Event to cloudwatch for debugging.
     loggerUtils.logS3Event(event);
 
-    // Fetch and process transcript from s3
-    const transcript = await s3Utils.getJsonFromS3Event(event);
-    console.log('Fetched transcript: \n', transcript);
-    const processedTranscript = utils.processTranscript(transcript);
+    let objectKey = s3Utils.getObjectKeyFromS3Event(event);
+    let contactId = s3Utils.getAwsConnectContactIdFromS3Key(objectKey);
+    let callRecord = await callRecordingUtils.getCallRecord(contactId);
 
-    // Fetch related call record from Sugar
-    const connectContactId = transcript.CustomerMetadata.ContactId;
-    let callRecord = await callRecordingUtils.getCallRecord(connectContactId);
-
-    // If our response doesn't match exactly one call, the conditions for this function haven't
-    // been met so return 412
     if (!callRecord) {
         return {
             status: HttpStatus.preconditionFailed,
@@ -54,10 +45,10 @@ const handler = async (event) => {
         };
     }
 
-    // Update call record with readable transcript, return the result
+    let callRecordingUrl = callRecordingUtils.buildCallRecordingUrl(contactId);
+
     let callBean = app.data.createBean('Calls', callRecord);
-    callBean.set(CallsConstants.CALLS_AGENT_TRANSCRIPT, processedTranscript);
-    callBean.set(CallsConstants.CALLS_CUSTOMER_TRANSCRIPT, processedTranscript);
+    callBean.set(CallsConstants.CALLS_CALL_RECORDING_URL, callRecordingUrl);
 
     return await callBean.save();
 };

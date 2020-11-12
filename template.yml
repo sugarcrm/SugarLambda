@@ -26,6 +26,10 @@ Parameters:
     Type: String
     Default: ''
     Description: URL of your Sugar Instance
+  AwsConnectInstance:
+    Type: String
+    Default: ''
+    Description: AWS Connect instance name
 
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
@@ -76,7 +80,7 @@ Resources:
       Handler: 'src/handlers/save-transcript.handler'
       Runtime: 'nodejs12.x'
       MemorySize: 128
-      Role: !GetAtt SaveCallTranscriptExecutionRole.Arn
+      Role: !GetAtt s3CloudwatchLambdaExecutionRole.Arn
       Timeout: 60
       Environment:
         Variables:
@@ -84,8 +88,24 @@ Resources:
           sugarPass: !Ref SugarPassword
           sugarUrl: !Ref SugarUrl
 
+  CallRecordingFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: AWS Lambda Function to perform actions on the call recording
+      Handler: 'src/handlers/call-recording.handler'
+      Runtime: 'nodejs12.x'
+      MemorySize: 128
+      Role: !GetAtt s3CloudwatchLambdaExecutionRole.Arn
+      Timeout: 60
+      Environment:
+        Variables:
+          sugarUsername: !Ref SugarUsername
+          sugarPass: !Ref SugarPassword
+          sugarUrl: !Ref SugarUrl
+          awsConnectInstance: !Ref AwsConnectInstance
+
   # Role to combine S3, CloudWatch, and Basic Lambda permissions for saving
-  SaveCallTranscriptExecutionRole:
+  s3CloudwatchLambdaExecutionRole:
     Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:

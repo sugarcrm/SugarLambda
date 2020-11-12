@@ -1,0 +1,38 @@
+{
+    "Records": [
+        {
+            "eventVersion": "2.1",
+            "eventSource": "aws:s3",
+            "awsRegion": "us-west-2",
+            "eventTime": "2020-11-02T15:11:37.731Z",
+            "eventName": "ObjectCreated:Put",
+            "userIdentity": {
+                "principalId": "AWS:123ABC:RecordingUploadTask"
+            },
+            "requestParameters": {
+                "sourceIPAddress": "1.2.3.4.5"
+            },
+            "responseElements": {
+                "x-amz-request-id": "123ABC",
+                "x-amz-id-2": "123ABC/123"
+            },
+            "s3": {
+                "s3SchemaVersion": "1.0",
+                "configurationId": "123-ABC",
+                "bucket": {
+                    "name": "connect-123abc",
+                    "ownerIdentity": {
+                        "principalId": "123ABC"
+                    },
+                    "arn": "arn:aws:s3:::connect-123abc"
+                },
+                "object": {
+                    "key": "connect/sugar-roger/CallRecordings/2020/11/02/123-abc-456-def-789_20201102T15%3A11_UTC.wav",
+                    "size": 432684,
+                    "eTag": "123abc",
+                    "sequencer": "123"
+                }
+            }
+        }
+    ]
+}
