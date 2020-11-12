@@ -37,7 +37,7 @@ module.exports = () => {
             return `${serverUrl}/${path}`;
         },
 
-        call: async function(method, url, data) {
+        call: async function(method, url, data, params) {
             try {
                 let response = await axios.post(this.buildUrl('oauth2/token'), {
                     grant_type: 'password',
@@ -59,6 +59,9 @@ module.exports = () => {
                 };
                 if (data) {
                     request.data = data;
+                }
+                if (params) {
+                    request.params = params;
                 }
                 response = await axios(request);
                 if (response.data) {
