@@ -16,11 +16,12 @@ const lambda = require('../../../src/handlers/create-case.js');
 jest.mock('../../../src/core/bean.js', () => () => ({
     save: function() {
         return {
-            status: 200,
-            data: {
-                name: 'test'
-            }
+            id: 1,
+            case_number: 1
         };
+    },
+    get: function() {
+        return 1;
     }
 }));
 
@@ -40,10 +41,9 @@ describe('Test for create-case', function() {
         const result = await lambda.createCaseHandler(evt);
         // The expected result
         const expectedResult = {
-            status: 200,
-            data: {
-                name: 'test'
-            }
+            statusCode: 200,
+            caseId: 1,
+            caseNumber: 1
         };
         // Compare the result with the expected result
         expect(result).toEqual(expectedResult);

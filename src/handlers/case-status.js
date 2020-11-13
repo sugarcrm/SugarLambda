@@ -36,20 +36,18 @@ const handler = async (event) => {
     const response = await app.api.call('read', filterUrl, null, queryParams);
 
     const caseBean = response.data.records[0];
-    let statusCode = HttpStatus.notFound;
-    let body = {};
 
     if (caseBean) {
-        statusCode = HttpStatus.ok;
-        body = {
-            id: caseBean.id,
-            status: caseBean.status
+        return {
+            statusCode: HttpStatus.ok,
+            caseId: caseBean.id,
+            caseStatus: caseBean.status
+        };
+    } else {
+        return {
+            statusCode: HttpStatus.notFound
         };
     }
-    return {
-        status: statusCode,
-        body: body
-    };
 };
 
 exports.handler = handler;
