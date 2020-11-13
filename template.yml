@@ -63,6 +63,24 @@ Resources:
         # Give Lambda basic execution Permission to write CloudWatch logs
         - AWSLambdaBasicExecutionRole
 
+  # This is a Lambda function config associated with the source code: add-note-to-case.js
+  AddNoteToCaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/handlers/add-note-to-case.handler
+      Runtime: nodejs12.x
+      MemorySize: 128
+      Timeout: 100
+      Environment:
+        Variables:
+          sugarUsername: !Ref SugarUsername
+          sugarPass: !Ref SugarPassword
+          sugarUrl: !Ref SugarUrl
+      Description: A Lambda function that adds a note to a case.
+      Policies:
+        # Give Lambda basic execution Permission to write CloudWatch logs
+        - AWSLambdaBasicExecutionRole
+
   # This is a Lambda function config for source code: case-status.js
   CaseStatusFunction:
     Type: 'AWS::Serverless::Function'
