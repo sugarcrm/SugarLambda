@@ -33,7 +33,10 @@ describe('Test for create-case', function() {
         const evt = {
             Details: {
                 Parameters: {
-                    name: 'test'
+                    contactName: 'John',
+                    contactId: 'JohnId',
+                    caseDescription: 'test',
+                    caseSource: 'Phone'
                 }
             }
         };
