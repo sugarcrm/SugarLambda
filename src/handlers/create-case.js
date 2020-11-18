@@ -13,9 +13,29 @@
  * A Lambda function that creates a case.
  */
 const app = require('../core/app.js');
+const { HttpStatus } = require('../constants/http-status');
 
 exports.createCaseHandler = async (event) => {
-    let params = event['Details']['Parameters'] || {};
-    let bean = app.data.createBean('Cases', params);
-    return await bean.save();
+    const params = {
+        name: 'Case from ' + (event.Details.Parameters.contactName || 'Customer'),
+        description: event.Details.Parameters.caseDescription || '',
+        source: event.Details.Parameters.caseSource || '',
+        account_id: event.Details.Parameters.accountId || '',
+        primary_contact_id: event.Details.Parameters.contactId || ''
+    };
+
+    const bean = app.data.createBean('Cases', params);
+    await bean.save();
+
+    if (bean.get('id')) {
+        return {
+            statusCode: HttpStatus.ok,
+            caseId: bean.get('id'),
+            caseNumber: bean.get('case_number')
+        };
+    } else {
+        return {
+            statusCode: HttpStatus.error
+        };
+    }
 };

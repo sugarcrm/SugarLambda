@@ -22,10 +22,10 @@
             }
         },
         "Parameters": {
-            "account_id": "a1577734-1261-11eb-9ac9-f45c898a3ce7",
-            "name": "createCase Test1",
-            "description": "Test createCase Lambda function",
-            "source": "Phone"
+            "caseDescription": "Test createCase Lambda function",
+            "caseSource": "Phone",
+            "contactName": "Felisha Kozlowski",
+            "contactId": "d4cefb52-2079-11eb-99f2-f45c898a3ce7"
         }
     },
     "Name": "ContactFlowEvent"

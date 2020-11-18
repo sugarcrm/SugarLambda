@@ -31,9 +31,12 @@ describe('Test for case-status', function() {
             mockApi.mockReturnValue(apiResponse);
             app.api.call = mockApi;
             let result = await lambda.handler(evt);
-            let expected = {
-                status: matched ? 200 : 404,
-                body: matched ? { id: 1, status: 'good' } : {}
+            let expected = matched ? {
+                statusCode: 200,
+                caseId: 1,
+                caseStatus: 'good'
+            } : {
+                statusCode: 404
             };
             expect(result).toEqual(expected);
         });
