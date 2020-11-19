@@ -99,6 +99,19 @@ Resources:
         # Give Lambda basic execution Permission to createCase
         - AWSLambdaBasicExecutionRole
 
+  # This is a Lambda function config for source code: lex-get-string.js
+  LexGetStringFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: AWS Lambda Function to be called by Lex to return whole input
+      Handler: 'src/handlers/lex-get-string.handler'
+      Runtime: 'nodejs12.x'
+      MemorySize: 128
+      Timeout: 60
+      Policies:
+        # Give Lambda basic execution Permission to createCase
+        - AWSLambdaBasicExecutionRole
+
   SaveCallTranscriptFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
