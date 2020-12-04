@@ -9,12 +9,11 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-module.exports = { 
+module.exports = {
     /**
      * Define constants for exact Sugar field names
      */
     CALLS_AWS_CONTACT_ID: 'aws_contact_id',
     CALLS_CALL_RECORDING_URL: 'call_recording_url',
-    CALLS_AGENT_TRANSCRIPT: 'agent_transcript',
-    CALLS_CUSTOMER_TRANSCRIPT: 'customer_transcript'
+    CALLS_TRANSCRIPT: 'transcript'
 };
