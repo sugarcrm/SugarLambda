@@ -56,8 +56,7 @@ const handler = async (event) => {
 
     // Update call record with readable transcript, return the result
     let callBean = app.data.createBean('Calls', callRecord);
-    callBean.set(CallsConstants.CALLS_AGENT_TRANSCRIPT, processedTranscript);
-    callBean.set(CallsConstants.CALLS_CUSTOMER_TRANSCRIPT, processedTranscript);
+    callBean.set(CallsConstants.CALLS_TRANSCRIPT, processedTranscript);
 
     return await callBean.save();
 };
