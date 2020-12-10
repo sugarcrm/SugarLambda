@@ -31,8 +31,14 @@ const handler = async (event) => {
     const queryParams = {
         fields: 'status'
     };
-    const caseNumber = event.Details.Parameters.caseNumber;
-    const filterUrl = encodeURI(`${baseUrl}/rest/v11_10/Cases?filter[0][case_number]=${caseNumber}`);
+    const caseNumber = event.Details.Parameters.caseNumber || '';
+    const contactId = event.Details.Parameters.contactId || '';
+    if (!caseNumber || !contactId) {
+        return {
+            statusCode: HttpStatus.preconditionFailed
+        };
+    }
+    const filterUrl = encodeURI(`${baseUrl}/rest/v11_10/Contact/${contactId}/Cases?filter[0][case_number]=${caseNumber}&fields=id,status`);
     const response = await app.api.call('read', filterUrl, null, queryParams);
 
     const caseBean = response.data.records[0];
