@@ -12,6 +12,7 @@
 const axios = require('axios');
 
 const { HttpStatus } = require('../constants/http-status.js');
+const { Secrets } = require('../utils/aws/secrets');
 
 const methodToRequest = {
     'read': 'GET',
@@ -22,8 +23,6 @@ const methodToRequest = {
 
 module.exports = () => {
     const serverUrl = (process.env.sugarUrl || 'localhost') + '/rest/v11_10';
-    const username = process.env.sugarUsername || '';
-    const password = process.env.sugarPass || '';
 
     return {
         serverUrl: serverUrl,
@@ -33,6 +32,9 @@ module.exports = () => {
         },
 
         call: async function(method, url, data, params) {
+            const secrets = JSON.parse(await Secrets);
+            const username = secrets.sugarUsername || '';
+            const password = secrets.sugarPass || '';
             try {
                 let response = await axios.post(this.buildUrl('oauth2/token'), {
                     grant_type: 'password',

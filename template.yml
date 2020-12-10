@@ -53,6 +53,16 @@ Resources:
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
+  # Secrets Manager Secret to store Sugar Username/Password
+  SugarSecrets:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: SugarSecrets
+      Description: This secret stores your SugarCRM Credentials using AWS Secrets Manager
+      SecretString: !Sub 
+        - '{"sugarUsername": "${Username}", "sugarPass": "${Password}"}'
+        - { Username: !Ref SugarUsername, Password: !Ref SugarPassword }
+
   # This is a Lambda function config associated with the source code: create-case.js
   CreateCaseFunction:
     Type: AWS::Serverless::Function
@@ -63,13 +73,14 @@ Resources:
       Timeout: 100
       Environment:
         Variables:
-          sugarUsername: !Ref SugarUsername
-          sugarPass: !Ref SugarPassword
+          region: !Ref AWS::Region
+          secretManagerName: SugarSecrets
           sugarUrl: !Ref SugarUrl
       Description: A Lambda function that creates a case.
       Policies:
         # Give Lambda basic execution Permission to write CloudWatch logs
         - AWSLambdaBasicExecutionRole
+        - SecretsManagerReadWrite
 
   # This is a Lambda function config associated with the source code: add-note-to-case.js
   AddNoteToCaseFunction:
@@ -81,13 +92,14 @@ Resources:
       Timeout: 100
       Environment:
         Variables:
-          sugarUsername: !Ref SugarUsername
-          sugarPass: !Ref SugarPassword
+          region: !Ref AWS::Region
+          secretManagerName: SugarSecrets
           sugarUrl: !Ref SugarUrl
       Description: A Lambda function that adds a note to a case.
       Policies:
         # Give Lambda basic execution Permission to write CloudWatch logs
         - AWSLambdaBasicExecutionRole
+        - SecretsManagerReadWrite
 
   # This is a Lambda function config for source code: case-status.js
   CaseStatusFunction:
@@ -100,12 +112,13 @@ Resources:
       Timeout: 60
       Environment:
         Variables:
-          sugarUsername: !Ref SugarUsername
-          sugarPass: !Ref SugarPassword
+          region: !Ref AWS::Region
+          secretManagerName: SugarSecrets
           sugarUrl: !Ref SugarUrl
       Policies:
         # Give Lambda basic execution Permission to createCase
         - AWSLambdaBasicExecutionRole
+        - SecretsManagerReadWrite
 
   # This is a Lambda function config for source code: lex-get-string.js
   LexGetStringFunction:
@@ -131,8 +144,8 @@ Resources:
       Timeout: 60
       Environment:
         Variables:
-          sugarUsername: !Ref SugarUsername
-          sugarPass: !Ref SugarPassword
+          region: !Ref AWS::Region
+          secretManagerName: SugarSecrets
           sugarUrl: !Ref SugarUrl
 
   CallRecordingFunction:
@@ -146,8 +159,8 @@ Resources:
       Timeout: 60
       Environment:
         Variables:
-          sugarUsername: !Ref SugarUsername
-          sugarPass: !Ref SugarPassword
+          region: !Ref AWS::Region
+          secretManagerName: SugarSecrets
           sugarUrl: !Ref SugarUrl
           awsConnectInstance: !Ref AwsConnectInstance
           awsConnectDomain: !Ref AWSConnectDomain
@@ -193,6 +206,7 @@ Resources:
         - "arn:aws:iam::aws:policy/AmazonS3FullAccess"
         - "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
         - "arn:aws:iam::aws:policy/AWSLambdaExecute"
+        - "arn:aws:iam::aws:policy/SecretsManagerReadWrite"
 
   # Role to give StartChat lambda access to the client amazon connect instance
   StartChatLambdaExecutionRole:
