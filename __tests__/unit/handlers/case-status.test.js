@@ -15,16 +15,15 @@ const lambda = require('../../../src/handlers/case-status');
 
 describe('Test for case-status', function() {
     test.each([
-        [1, 'cid', { data: { records: [{ id: 1, status: 'good' }] } }, true],
-        [1, 'cid', { data: { records: [] } }, false]
+        [1, { data: { records: [{ id: 1, status: 'good' }] } }, true],
+        [1, { data: { records: [] } }, false]
     ])(
         'Verify correct response whether or not case is returned by API',
-        async (number, cid, apiResponse, matched) => {
+        async (number, apiResponse, matched) => {
             let evt = {
                 Details: {
                     Parameters: {
-                        caseNumber: number,
-                        contactId: cid
+                        caseNumber: number
                     }
                 }
             };

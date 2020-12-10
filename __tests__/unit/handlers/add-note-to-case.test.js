@@ -15,14 +15,14 @@ const lambda = require('../../../src/handlers/add-note-to-case');
 
 describe('Test for add-note-to-case', function() {
     test.each([
-        [1, 'cid', 'test1', 'John Doe', { data: { records: [{ id: 1 }] } }, { data: { record: { id: 1 } } }, true],
-        [1, 'cid', 'test2', '', { data: { records: [{ id: 1 }] } }, { data: { record: { id: 1 } } }, true],
-        [1, 'cid', 'test3', 'John Doe', { data: { records: [{ id: 1 }] } }, { data: {} }, false],
-        [1, 'cid', 'test4', 'John Doe', { data: { records: [] } }, { data: { record: { id: 1 } } }, false],
-        [1, 'cid', 'test5', 'John Doe', { data: { records: [] } }, { data: {} }, false]
+        [1, 'test1', 'John Doe', { data: { records: [{ id: 1 }] } }, { data: { record: { id: 1 } } }, true],
+        [1, 'test2', '', { data: { records: [{ id: 1 }] } }, { data: { record: { id: 1 } } }, true],
+        [1, 'test3', 'John Doe', { data: { records: [{ id: 1 }] } }, { data: {} }, false],
+        [1, 'test4', 'John Doe', { data: { records: [] } }, { data: { record: { id: 1 } } }, false],
+        [1, 'test5', 'John Doe', { data: { records: [] } }, { data: {} }, false]
     ])(
         'Verify correct response whether or not case is returned by API and note is added',
-        async (number, cid, noteDescription, contactName, apiResponse1, apiResponse2, matched) => {
+        async (number, noteDescription, contactName, apiResponse1, apiResponse2, matched) => {
             process.env = {
                 sugarUrl: 'https://cs-829.msqa.sugarcrm.com'
             };
@@ -31,7 +31,6 @@ describe('Test for add-note-to-case', function() {
                 Details: {
                     Parameters: {
                         caseNumber: number,
-                        contactId: cid,
                         noteDescription: noteDescription,
                         contactName: contactName
                     }

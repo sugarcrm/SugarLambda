@@ -29,8 +29,7 @@
         }
         },
         "Parameters": {
-            "caseNumber": "200",
-            "contactId": ""
+            "caseNumber": "200"
         }
     }
 }

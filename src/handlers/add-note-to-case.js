@@ -33,18 +33,12 @@ const baseUrl = process.env.sugarUrl;
  */
 const addNoteToCaseHandler = async (event) => {
     // input from the contact flow provided by the user
-    const caseNumber = event.Details.Parameters.caseNumber || '';
-    const contactId = event.Details.Parameters.contactId || '';
-    if (!caseNumber || !contactId) {
-        return {
-            statusCode: HttpStatus.preconditionFailed
-        };
-    }
+    const caseNumber = event.Details.Parameters.caseNumber;
     const noteDescription = event.Details.Parameters.noteDescription;
     const contactName = event.Details.Parameters.contactName;
 
     // Use the given case number to get the relavant case id
-    const filterUrl = encodeURI(`${baseUrl}/rest/v11_10/Contact/${contactId}/Cases?filter[0][case_number]=${caseNumber}&fields=id`);
+    const filterUrl = encodeURI(`${baseUrl}/rest/v11_10/Cases?filter[0][case_number]=${caseNumber}`);
     const idResponse = await app.api.call('read', filterUrl, null, null);
     const caseBean = idResponse.data.records[0];
 
