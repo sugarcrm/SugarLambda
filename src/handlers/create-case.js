@@ -19,8 +19,13 @@ exports.createCaseHandler = async (event) => {
     const params = {
         name: 'Case from ' + (event.Details.Parameters.contactName || 'Customer'),
         description: event.Details.Parameters.caseDescription || '',
-        source: event.Details.Parameters.caseSource || '',
+        source: event.Details.Parameters.caseSource || 'Chatbot',
         account_id: event.Details.Parameters.accountId || '',
+        status: event.Details.Parameters.caseStatus || 'New',
+        pending_processing: event.Details.Parameters.casePendingProcess || false,
+        portal_viewable: event.Details.Parameters.casePortalViewable || true,
+        priority: event.Details.Parameters.casePriority || 'P1',
+        type: event.Details.Parameters.caseType || 'Administration',
         primary_contact_id: event.Details.Parameters.contactId || ''
     };
 
