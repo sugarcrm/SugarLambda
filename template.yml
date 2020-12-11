@@ -30,6 +30,14 @@ Parameters:
     Type: String
     Default: ''
     Description: AWS Connect instance name
+  AWSConnectDomain:
+    Type: String
+    Default: ''
+    Description: The domain name of your AWS Connect instance (e.g "example.com").
+  CallRecordingPartialURL:
+    Type: String
+    Default: '/connect/get-recording?format=mp3&callLegId='
+    Description: The partial URL used to construct call recording links. This value should not be changed unless AWS updates how call recording links are generated.
   ContactFlowId:
     Type: String
     Description: The contact flow id that the customer will interact with while chatting
@@ -142,6 +150,8 @@ Resources:
           sugarPass: !Ref SugarPassword
           sugarUrl: !Ref SugarUrl
           awsConnectInstance: !Ref AwsConnectInstance
+          awsConnectDomain: !Ref AWSConnectDomain
+          callRecordingPartialUrl: !Ref CallRecordingPartialURL
 
   # Function to start connect Chat from API call
   StartChatFunction:

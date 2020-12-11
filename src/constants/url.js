@@ -14,6 +14,4 @@ module.exports = {
      * URL Partials
      */
     HTTPS_PREFIX: 'https://',
-    AWS_CONNECT_URL_PARTIAL: '.awsapps.com/connect/',
-    AWS_CONNECT_CALL_RECORDING_URL_PARTIAL: 'get-recording?format=mp3&callLegId=',
 };

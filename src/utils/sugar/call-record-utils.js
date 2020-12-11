@@ -50,17 +50,30 @@ async function getCallRecord (contactId) {
  */
 function buildCallRecordingUrl (contactId) {
   let connectInstance = process.env.awsConnectInstance;
+  let connectDomain = process.env.awsConnectDomain;
+  let callRecordingPartialUrl = process.env.callRecordingPartialUrl;
 
-  // return empty if AWS Connect instance name or contact ID is not defined
-  if (!connectInstance || !contactId) {
+  // return empty if contact ID is not defined
+  if (!contactId) {
+    console.warn('Call Recording URL Warning: Unable to construct a URL without AWS Connect contact ID');
+    return '';
+  }
+
+  // return empty if one or more of the required parameters is not defined
+  if (!connectInstance || !connectDomain || !callRecordingPartialUrl) {
+    console.warn('Call Recording URL Warning: Unable to construct a URL with missing required parameter(s). ' +
+      'Please check the following parameters: AwsConnectInstance, AWSConnectDomain, CallRecordingPartialURL');
     return '';
   }
 
   let encodedConnectInstance = encodeURIComponent(connectInstance);
   let encodedContactId = encodeURIComponent(contactId);
 
-  let url = UrlConstants.HTTPS_PREFIX + encodedConnectInstance + UrlConstants.AWS_CONNECT_URL_PARTIAL +
-    UrlConstants.AWS_CONNECT_CALL_RECORDING_URL_PARTIAL + encodedContactId;
+  connectDomain = connectDomain.trim();
+  callRecordingPartialUrl = callRecordingPartialUrl.trim();
+
+  let url = UrlConstants.HTTPS_PREFIX + encodedConnectInstance + '.' + connectDomain +
+    callRecordingPartialUrl + encodedContactId;
 
   return url;
 }
