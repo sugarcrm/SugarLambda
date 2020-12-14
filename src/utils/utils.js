@@ -23,4 +23,6 @@ function processTranscript(transcript) {
     return processedTranscript.trim();
 }
 
-module.exports = { processTranscript };
+module.exports = {
+    processTranscript
+};

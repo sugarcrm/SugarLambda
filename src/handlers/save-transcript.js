@@ -18,6 +18,7 @@ const s3Utils = require('../utils/aws/s3-utils');
 const utils = require('../utils/utils');
 const loggerUtils = require('../utils/logger-utils');
 const callRecordingUtils = require('../utils/sugar/call-record-utils');
+const strUtils = require('../utils/string-utils');
 
 /**
  * Defined constants
@@ -38,7 +39,7 @@ const handler = async (event) => {
 
     // Fetch and process transcript from s3
     const transcript = await s3Utils.getJsonFromS3Event(event);
-    console.log('Fetched transcript: \n', transcript);
+    loggerUtils.logJson('Fetched transcript', transcript);
     const processedTranscript = utils.processTranscript(transcript);
 
     // Fetch related call record from Sugar
@@ -48,17 +49,17 @@ const handler = async (event) => {
     // If our response doesn't match exactly one call, the conditions for this function haven't
     // been met so return 412
     if (!callRecord) {
-        return {
+        return loggerUtils.logReturnValue({
             status: HttpStatus.preconditionFailed,
-            body: ErrorMessages.ERROR_MULTIPLE_CALL_RECORDS_IN_RESPONSE
-        };
+            body: strUtils.generateMessage(ErrorMessages.TPL_CANNOT_MATCH_RECORD, 'Call')
+        });
     }
 
     // Update call record with readable transcript, return the result
     let callBean = app.data.createBean('Calls', callRecord);
     callBean.set(CallsConstants.CALLS_TRANSCRIPT, processedTranscript);
 
-    return await callBean.save();
+    return loggerUtils.logReturnValue(await callBean.save());
 };
 
 exports.handler = handler;

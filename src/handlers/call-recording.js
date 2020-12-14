@@ -14,24 +14,26 @@ const app = require('../core/app.js');
 /**
  * Utils
  */
+const callRecordingUtils = require('../utils/sugar/call-record-utils');
 const loggerUtils = require('../utils/logger-utils');
 const s3Utils = require('../utils/aws/s3-utils');
-const callRecordingUtils = require('../utils/sugar/call-record-utils');
+const stringUtils = require('../utils/string-utils.js');
 
 /**
  * Defined constants
  */
-const ErrorMessages = require('../constants/messages/error');
 const CallsConstants = require('../constants/sugar-modules/calls');
+const ErrorMessages = require('../constants/messages/error');
 const { HttpStatus } = require('../constants/http-status.js');
 
 /**
- * Function to update a call record's call recording URL when the 
+ * Function to update a call record's call recording URL when the
  * audio file is ready
  *
  * @param {Object} event the S3 trigger event
  */
 const handler = async (event) => {
+    // Log S3 Event to cloudwatch for debugging
     loggerUtils.logS3Event(event);
 
     let objectKey = s3Utils.getObjectKeyFromS3Event(event);
@@ -39,10 +41,10 @@ const handler = async (event) => {
     let callRecord = await callRecordingUtils.getCallRecord(contactId);
 
     if (!callRecord) {
-        return {
+        return loggerUtils.logReturnValue({
             status: HttpStatus.preconditionFailed,
-            body: ErrorMessages.ERROR_MULTIPLE_CALL_RECORDS_IN_RESPONSE
-        };
+            body: stringUtils.generateMessage(ErrorMessages.TPL_CANNOT_MATCH_RECORD, 'Call')
+        });
     }
 
     let callRecordingUrl = callRecordingUtils.buildCallRecordingUrl(contactId);
@@ -50,7 +52,7 @@ const handler = async (event) => {
     let callBean = app.data.createBean('Calls', callRecord);
     callBean.set(CallsConstants.CALLS_CALL_RECORDING_URL, callRecordingUrl);
 
-    return await callBean.save();
+    return loggerUtils.logReturnValue(await callBean.save());
 };
 
 exports.handler = handler;

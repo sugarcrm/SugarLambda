@@ -9,6 +9,7 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 const AWS = require('aws-sdk');
+const loggerUtils = require('../logger-utils');
 
 /**
  * Get JSON uploaded to S3 based on the S3 trigger event
@@ -25,13 +26,12 @@ async function getJsonFromS3Event(event) {
         Bucket: srcBucket,
         Key: srcKey
     };
-    console.log('fetching s3 bucket object\n', params);
+    loggerUtils.logJson('Fetching from S3 bucket:', params);
 
     // Fetch object form S3
     const s3Object = await s3.getObject(params, function(err, data) {
         if (err) {
-            console.log('error happened');
-            console.log(err, err.stack);
+            console.warn(err, err.stack);
         } else {
             return JSON.stringify(data.Body.toString('utf-8'));
         }

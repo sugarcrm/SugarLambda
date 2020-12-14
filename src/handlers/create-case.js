@@ -13,9 +13,18 @@
  * A Lambda function that creates a case.
  */
 const app = require('../core/app.js');
+
+/**
+ * Defined constants
+ */
 const { HttpStatus } = require('../constants/http-status');
+const ErrorMessages = require('../constants/messages/error');
+const SuccessMessages = require('../constants/messages/success');
+const loggerUtils = require('../utils/logger-utils.js');
 
 exports.createCaseHandler = async (event) => {
+    // Log Contact Flow Event to cloudwatch for debugging
+    loggerUtils.logContactFlowEvent(event);
     const params = {
         name: 'Case from ' + (event.Details.Parameters.contactName || 'Customer'),
         description: event.Details.Parameters.caseDescription || '',
@@ -33,14 +42,16 @@ exports.createCaseHandler = async (event) => {
     await bean.save();
 
     if (bean.get('id')) {
-        return {
+        return loggerUtils.logReturnValue({
             statusCode: HttpStatus.ok,
             caseId: bean.get('id'),
-            caseNumber: bean.get('case_number')
-        };
+            caseNumber: bean.get('case_number'),
+            body: SuccessMessages.LAMBDA_FUNCTION_SUCCESS
+        });
     } else {
-        return {
-            statusCode: HttpStatus.error
-        };
+        return loggerUtils.logReturnValue({
+            statusCode: HttpStatus.error,
+            body: ErrorMessages.ERROR_CANNOT_CREATE_CASE
+        });
     }
 };

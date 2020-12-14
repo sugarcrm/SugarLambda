@@ -11,13 +11,7 @@
 
 module.exports = {
     /**
-     * Error messages
+     * Success messages
      */
-    ERROR_CANNOT_CREATE_CASE: 'Unable to create Case in SugarCRM',
-    ERROR_NOTE_CREATE_FAILED: 'Unable to link Note to Case in SugarCRM',
-
-    TPL_CANNOT_MATCH_RECORD: 'Unable to match exactly one ${} record',
-    TPL_MISSING_REQUIRED_PARAMETERS: 'Missing required parameters: ${}',
-    TPL_MULTIPLE_RECORDS_MATCHED: 'Matched multiple ${} records',
-    TPL_NO_RECORDS_MATCHED: 'Unable to match any ${} records'
+    LAMBDA_FUNCTION_SUCCESS: 'Lambda Function Completed Successfully'
 };

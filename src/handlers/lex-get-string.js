@@ -9,6 +9,8 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
+const loggerUtils = require("../utils/logger-utils");
+
 /**
  * Close dialog with the customer, reporting fulfillmentState Fulfilled
  * @param sessionAttributes
@@ -57,6 +59,8 @@ function dispatch(intentRequest, callback) {
  * @param callback
  */
 exports.handler = (event, context, callback) => {
+    // Log Lex Event to cloudwatch for debugging
+    loggerUtils.logLexEvent(event);
     try {
         dispatch(event,
             (response) => {

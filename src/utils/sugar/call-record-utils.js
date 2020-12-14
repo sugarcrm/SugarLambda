@@ -14,12 +14,13 @@ const app = require('../../core/app');
 /**
  * Utils
  */
-const loggerUtils = require('../logger-utils');
+const strUtils = require('../string-utils');
 
 /**
  * Defined Constants
  */
 const CallsConstants = require('../../constants/sugar-modules/calls');
+const ErrorMessages = require('../../constants/messages/error');
 const UrlConstants = require('../../constants/url');
 
  /**
@@ -27,19 +28,25 @@ const UrlConstants = require('../../constants/url');
   *
   * @param {string} contactId the AWS Connect contact ID
   */
-async function getCallRecord (contactId) {
-  let url = encodeURI(`Calls?filter[0][${CallsConstants.CALLS_AWS_CONTACT_ID}]=${contactId}`);
-  url = app.api.buildUrl(url);
-  const response = await app.api.call('read', url);
-  loggerUtils.logSugarApiResponse(response);
+async function getCallRecord(contactId) {
+    let url = encodeURI(`Calls?filter[0][${CallsConstants.CALLS_AWS_CONTACT_ID}]=${contactId}`);
+    url = app.api.buildUrl(url);
+    const response = await app.api.call('read', url);
 
-  // return false if the response is invalid or more than one record was returned
-  if (!response.data || !Array.isArray(response.data.records) || response.data.records.length !== 1) {
-    return false;
-  }
+    // return false if the response is invalid or no records were returned
+    if (!response.data || !Array.isArray(response.data.records) || response.data.records.length === 0) {
+        console.warn(strUtils.generateMessage(ErrorMessages.TPL_NO_RECORDS_MATCHED, 'Call'));
+        return false;
+    }
 
-  // return a single call record
-  return response.data.records[0];
+    // return false if multiple call records were returned
+    if (response.data.length > 1) {
+        console.warn(strUtils.generateMessage(ErrorMessages.TPL_MULTIPLE_RECORDS_MATCHED, 'Call'));
+        return false;
+    }
+
+    // return a single call record
+    return response.data.records[0];
 }
 
 /**
