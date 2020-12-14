@@ -5,47 +5,134 @@
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  SugarLambda
+  The main AWS CloudFormation stack to integrate features with SugarCRM.
 
 # Transform section specifies one or more macros that AWS CloudFormation uses to process your template
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
 Transform:
 - AWS::Serverless-2016-10-31
 
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: S3 Bucket
+        Parameters:
+          - InstallationS3BucketName
+          - InstallationFile
+      - Label:
+          default: Sugar Instance
+        Parameters:
+          - SugarURL
+          - SugarUsername
+          - SugarPassword
+      - Label:
+          default: Sugar Portal Chat
+        Parameters:
+          - EnableSugarPortalChat
+          - AmazonConnectInstanceID
+          - ContactFlowID
+      - Label:
+          default: Call Recording Link
+        Parameters:
+          - EnableCallRecordingLink
+          - AWSConnectInstanceName
+          - AWSConnectDomain
+          - CallRecordingPartialURL
+      - Label:
+          default: Call Transcript Upload
+        Parameters:
+          - EnableCallTranscriptUpload
+
 # Environment variables
 Parameters:
+  InstallationS3BucketName:
+    Type: String
+    Description: The S3 bucket containing the files needed by this template.
+  InstallationFile:
+    Type: String
+    Description: >- 
+      The path to the installation file located in your S3 bucket (e.g. "my/path/Lambda-v1.0.zip").
+  EnableSugarPortalChat:
+    Type: String
+    Default: 'false'
+    Description: Turn this on to allow the chat window to be enabled in Sugar Portal.
+    AllowedValues:
+    - true
+    - false
+  EnableCallRecordingLink:
+    Type: String
+    Default: 'false'
+    Description: >-
+      Turn this on to save call recording links in Sugar. Call recording must be enabled
+      in Amazon Connect to use this feature.
+    AllowedValues:
+    - true
+    - false
+  EnableCallTranscriptUpload:
+    Type: String
+    Default: 'false'
+    Description: >-
+      Turn this on to save call transcripts in Sugar. Call recording and Contact Lens must
+      be enabled in Amazon Connect to use this feature.
+    AllowedValues:
+    - true
+    - false
   SugarUsername:
     Type: String
-    Default: ''
-    Description: Sugar Username for Authentication with Lambda
+    Description: >-
+      The Sugar user that Lambda will use to access Sugar. This user should have the privileges
+      required to perform the necessary actions in Sugar (e.g. update call records to save the
+      call recording URL).
   SugarPassword:
     Type: String
-    Default: ''
-    Description: Sugar Password for Authentication with Lambda
-  SugarUrl:
+    Description: The password of the specified Sugar user.
+  SugarURL:
     Type: String
-    Default: ''
-    Description: URL of your Sugar Instance
-  AwsConnectInstance:
+    Description: The URL of your Sugar instance.
+  AWSConnectInstanceName:
     Type: String
-    Default: ''
-    Description: AWS Connect instance name
+    Description: >-
+      The name of your Amazon Connect instance. For example, in the Amazon
+      Connect URL "https://example.awsapps.com/connect/ccp-v2", the instance name
+      is "example".
   AWSConnectDomain:
     Type: String
-    Default: ''
     Description: The domain name of your AWS Connect instance (e.g "example.com").
   CallRecordingPartialURL:
     Type: String
     Default: '/connect/get-recording?format=mp3&callLegId='
-    Description: The partial URL used to construct call recording links. This value should not be changed unless AWS updates how call recording links are generated.
-  ContactFlowId:
+    Description: >-
+      The partial URL used to construct call recording links. This value should not be
+      changed unless AWS updates how call recording links are generated.
+  ContactFlowID:
     Type: String
-    Description: The contact flow id that the customer will interact with while chatting
-    AllowedPattern: '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'
-  InstanceId:
+    Description: >-
+      The ID of the contact flow you wish to use in the Sugar Portal chat. If a contact flow's
+      ARN is "arn:aws:connect:us-west-2:123456789012:instance/1111/contact-flow/2222", the
+      contact flow ID is "2222".
+  AmazonConnectInstanceID:
     Type: String
-    Description: The instance id of the Amazon Connect instance that the customer will interact with while chatting
-    AllowedPattern: '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'
+    Description: >-
+      The ID of your Amazon Connect instance. If your instance ARN is 
+      "arn:aws:connect:us-west-2:123456789012:instance/1111", the instance ID is "1111".
+
+Conditions:
+  ShouldEnableSugarPortalChat: !Equals [ !Ref EnableSugarPortalChat, 'true' ]
+  ShouldEnableCallRecordingLink: !Equals [ !Ref EnableCallRecordingLink, 'true' ]
+  ShouldEnableCallTranscriptUpload: !Equals [ !Ref EnableCallTranscriptUpload, 'true' ]
+  ShouldInstallCreateCaseFunction: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallAddNoteToCaseFunction: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallCaseStatusFunction: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallLexGetStringFunction: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallStartChatFunction: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallStartChatLambdaExecutionRole: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallStartChatApiGateway: !Condition ShouldEnableSugarPortalChat
+  ShouldInstallSaveCallTranscriptFunction: !Condition ShouldEnableCallTranscriptUpload
+  ShouldInstallCallRecordingFunction: !Condition ShouldEnableCallRecordingLink
+  ShouldInstallS3CloudwatchLambdaExecutionRole: !Or
+    - !Condition ShouldInstallSaveCallTranscriptFunction
+    - !Condition ShouldInstallCallRecordingFunction
 
 # Resources declares the AWS resources that you want to include in the stack
 # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
@@ -65,6 +152,7 @@ Resources:
 
   # This is a Lambda function config associated with the source code: create-case.js
   CreateCaseFunction:
+    Condition: ShouldInstallCreateCaseFunction
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/create-case.createCaseHandler
@@ -75,7 +163,7 @@ Resources:
         Variables:
           region: !Ref AWS::Region
           secretManagerName: SugarSecrets
-          sugarUrl: !Ref SugarUrl
+          sugarUrl: !Ref SugarURL
       Description: A Lambda function that creates a case.
       Policies:
         # Give Lambda basic execution Permission to write CloudWatch logs
@@ -84,6 +172,7 @@ Resources:
 
   # This is a Lambda function config associated with the source code: add-note-to-case.js
   AddNoteToCaseFunction:
+    Condition: ShouldInstallAddNoteToCaseFunction
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/add-note-to-case.handler
@@ -94,7 +183,7 @@ Resources:
         Variables:
           region: !Ref AWS::Region
           secretManagerName: SugarSecrets
-          sugarUrl: !Ref SugarUrl
+          sugarUrl: !Ref SugarURL
       Description: A Lambda function that adds a note to a case.
       Policies:
         # Give Lambda basic execution Permission to write CloudWatch logs
@@ -103,6 +192,7 @@ Resources:
 
   # This is a Lambda function config for source code: case-status.js
   CaseStatusFunction:
+    Condition: ShouldInstallCaseStatusFunction
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: AWS Lambda Function to get case status by case number
@@ -114,7 +204,7 @@ Resources:
         Variables:
           region: !Ref AWS::Region
           secretManagerName: SugarSecrets
-          sugarUrl: !Ref SugarUrl
+          sugarUrl: !Ref SugarURL
       Policies:
         # Give Lambda basic execution Permission to createCase
         - AWSLambdaBasicExecutionRole
@@ -122,6 +212,7 @@ Resources:
 
   # This is a Lambda function config for source code: lex-get-string.js
   LexGetStringFunction:
+    Condition: ShouldInstallLexGetStringFunction
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: AWS Lambda Function to be called by Lex to return whole input
@@ -134,6 +225,7 @@ Resources:
         - AWSLambdaBasicExecutionRole
 
   SaveCallTranscriptFunction:
+    Condition: ShouldInstallSaveCallTranscriptFunction
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: AWS Lambda Function to save call transcripts based on S3 Trigger
@@ -146,9 +238,10 @@ Resources:
         Variables:
           region: !Ref AWS::Region
           secretManagerName: SugarSecrets
-          sugarUrl: !Ref SugarUrl
+          sugarUrl: !Ref SugarURL
 
   CallRecordingFunction:
+    Condition: ShouldInstallCallRecordingFunction
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: AWS Lambda Function to perform actions on the call recording
@@ -161,13 +254,14 @@ Resources:
         Variables:
           region: !Ref AWS::Region
           secretManagerName: SugarSecrets
-          sugarUrl: !Ref SugarUrl
-          awsConnectInstance: !Ref AwsConnectInstance
+          sugarUrl: !Ref SugarURL
+          awsConnectInstance: !Ref AWSConnectInstanceName
           awsConnectDomain: !Ref AWSConnectDomain
           callRecordingPartialUrl: !Ref CallRecordingPartialURL
 
   # Function to start connect Chat from API call
   StartChatFunction:
+    Condition: ShouldInstallStartChatFunction
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: AWS Lambda Function to start chat from incoming API call
@@ -178,8 +272,8 @@ Resources:
       Timeout: 60
       Environment:
         Variables:
-          instanceId: !Ref InstanceId
-          contactFlowId: !Ref ContactFlowId
+          instanceId: !Ref AmazonConnectInstanceID
+          contactFlowId: !Ref ContactFlowID
       Events:
         GetRoot:
           Type: Api
@@ -190,6 +284,7 @@ Resources:
 
   # Role to combine S3, CloudWatch, and Basic Lambda permissions for saving
   s3CloudwatchLambdaExecutionRole:
+    Condition: ShouldInstallS3CloudwatchLambdaExecutionRole
     Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
@@ -210,6 +305,7 @@ Resources:
 
   # Role to give StartChat lambda access to the client amazon connect instance
   StartChatLambdaExecutionRole:
+    Condition: ShouldInstallStartChatLambdaExecutionRole
     Type: "AWS::IAM::Role"
     Properties:
       AssumeRolePolicyDocument:
@@ -238,10 +334,11 @@ Resources:
                 Action:
                   - "connect:StartChatContact"
                 Resource:
-                  - !Sub "arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${InstanceId}"
-                  - !Sub "arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${InstanceId}/*"
+                  - !Sub "arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${AmazonConnectInstanceID}"
+                  - !Sub "arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${AmazonConnectInstanceID}/*"
 
   StartChatApiGateway:
+    Condition: ShouldInstallStartChatApiGateway
     Type: AWS::Serverless::Api
     Properties:
       StageName: Prod
