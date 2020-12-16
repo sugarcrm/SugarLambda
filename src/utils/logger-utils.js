@@ -12,10 +12,10 @@
 /**
  * Log the JSON to AWS Cloudwatch
  *
- * @param {string} title 
- * @param {Object} json 
+ * @param {string} title
+ * @param {Object} json
  */
-function logJson (title, json) {
+function logJson(title, json) {
     console.log(`${title}:\n`, JSON.stringify(json));
 }
 
@@ -59,18 +59,18 @@ function logReturnValue(returnValue) {
 /**
  * Log the S3 event for debugging
  *
- * @param {Object} event 
+ * @param {Object} event
  */
-function logS3Event (event) {
+function logS3Event(event) {
     logJson('S3 Event', event);
 }
 
 /**
  * Log the Sugar API response for debugging
  *
- * @param {string} response 
+ * @param {string} response
  */
-function logSugarApiResponse (response) {
+function logSugarApiResponse(response) {
     logJson('Sugar API Response', response);
 }
 

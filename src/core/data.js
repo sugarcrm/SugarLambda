@@ -9,7 +9,7 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-var Bean = require('./bean.js');
+let Bean = require('./bean.js');
 
 module.exports = {
     createBean: (module, data) => {

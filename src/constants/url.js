@@ -9,9 +9,9 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-module.exports = { 
+module.exports = {
     /**
      * URL Partials
      */
-    HTTPS_PREFIX: 'https://',
+    HTTPS_PREFIX: 'https://'
 };

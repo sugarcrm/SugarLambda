@@ -9,7 +9,7 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-const loggerUtils = require("../utils/logger-utils");
+const loggerUtils = require('../utils/logger-utils');
 
 /**
  * Close dialog with the customer, reporting fulfillmentState Fulfilled
@@ -24,10 +24,10 @@ function close(sessionAttributes, fulfillmentState, message) {
             type: 'Close',
             fulfillmentState,
             message
-        },
+        }
     };
 }
- 
+
 /**
  * Events
  * @param intentRequest
@@ -35,10 +35,10 @@ function close(sessionAttributes, fulfillmentState, message) {
  */
 function dispatch(intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
-    
+
     // assign the whole user input to sessionAttributes.string
     sessionAttributes.string = intentRequest.inputTranscript;
-    
+
     callback(
         close(
             sessionAttributes,
@@ -46,12 +46,12 @@ function dispatch(intentRequest, callback) {
             {
                 'contentType': 'PlainText',
                 'content': 'You entered: ' + sessionAttributes.string
-                
+
             }
         )
     );
 }
- 
+
 /**
  * Main handler
  * @param event
@@ -70,4 +70,3 @@ exports.handler = (event, context, callback) => {
         callback(err);
     }
 };
-
