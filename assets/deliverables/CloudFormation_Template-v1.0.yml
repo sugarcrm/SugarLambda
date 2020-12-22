@@ -1,0 +1,525 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: The main AWS CloudFormation stack to integrate features with SugarCRM.
+Metadata:
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+    - Label:
+        default: S3 Bucket
+      Parameters:
+      - InstallationS3BucketName
+      - InstallationFile
+    - Label:
+        default: Sugar Instance
+      Parameters:
+      - SugarURL
+      - SugarUsername
+      - SugarPassword
+    - Label:
+        default: Sugar Portal Chat
+      Parameters:
+      - EnableSugarPortalChat
+      - AmazonConnectInstanceID
+      - ContactFlowID
+    - Label:
+        default: Call Recording Link
+      Parameters:
+      - EnableCallRecordingLink
+      - AWSConnectInstanceName
+      - AWSConnectDomain
+      - CallRecordingPartialURL
+    - Label:
+        default: Call Transcript Upload
+      Parameters:
+      - EnableCallTranscriptUpload
+Parameters:
+  InstallationS3BucketName:
+    Type: String
+    Description: The S3 bucket containing the files needed by this template.
+  InstallationFile:
+    Type: String
+    Description: The path to the installation file located in your S3 bucket (e.g.
+      "my/path/Lambda-v1.0.zip").
+  EnableSugarPortalChat:
+    Type: String
+    Default: 'false'
+    Description: Turn this on to allow the chat window to be enabled in Sugar Portal.
+    AllowedValues:
+    - true
+    - false
+  EnableCallRecordingLink:
+    Type: String
+    Default: 'false'
+    Description: Turn this on to save call recording links in Sugar. Call recording
+      must be enabled in Amazon Connect to use this feature.
+    AllowedValues:
+    - true
+    - false
+  EnableCallTranscriptUpload:
+    Type: String
+    Default: 'false'
+    Description: Turn this on to save call transcripts in Sugar. Call recording and
+      Contact Lens must be enabled in Amazon Connect to use this feature.
+    AllowedValues:
+    - true
+    - false
+  SugarUsername:
+    Type: String
+    Description: The Sugar user that Lambda will use to access Sugar. This user should
+      have the privileges required to perform the necessary actions in Sugar (e.g.
+      update call records to save the call recording URL).
+  SugarPassword:
+    Type: String
+    Description: The password of the specified Sugar user.
+  SugarURL:
+    Type: String
+    Description: The URL of your Sugar instance.
+  AWSConnectInstanceName:
+    Type: String
+    Description: The name of your Amazon Connect instance. For example, in the Amazon
+      Connect URL "https://example.awsapps.com/connect/ccp-v2", the instance name
+      is "example".
+  AWSConnectDomain:
+    Type: String
+    Description: The domain name of your AWS Connect instance (e.g "example.com").
+  CallRecordingPartialURL:
+    Type: String
+    Default: /connect/get-recording?format=mp3&callLegId=
+    Description: The partial URL used to construct call recording links. This value
+      should not be changed unless AWS updates how call recording links are generated.
+  ContactFlowID:
+    Type: String
+    Description: The ID of the contact flow you wish to use in the Sugar Portal chat.
+      If a contact flow's ARN is "arn:aws:connect:us-west-2:123456789012:instance/1111/contact-flow/2222",
+      the contact flow ID is "2222".
+  AmazonConnectInstanceID:
+    Type: String
+    Description: The ID of your Amazon Connect instance. If your instance ARN is  "arn:aws:connect:us-west-2:123456789012:instance/1111",
+      the instance ID is "1111".
+Conditions:
+  ShouldEnableSugarPortalChat:
+    Fn::Equals:
+    - Ref: EnableSugarPortalChat
+    - 'true'
+  ShouldEnableCallRecordingLink:
+    Fn::Equals:
+    - Ref: EnableCallRecordingLink
+    - 'true'
+  ShouldEnableCallTranscriptUpload:
+    Fn::Equals:
+    - Ref: EnableCallTranscriptUpload
+    - 'true'
+  ShouldInstallCreateCaseFunction:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallAddNoteToCaseFunction:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallCaseStatusFunction:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallLexGetStringFunction:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallStartChatFunction:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallStartChatLambdaExecutionRole:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallStartChatApiGateway:
+    Condition: ShouldEnableSugarPortalChat
+  ShouldInstallSaveCallTranscriptFunction:
+    Condition: ShouldEnableCallTranscriptUpload
+  ShouldInstallCallRecordingFunction:
+    Condition: ShouldEnableCallRecordingLink
+  ShouldInstallS3CloudwatchLambdaExecutionRole:
+    Fn::Or:
+    - Condition: ShouldInstallSaveCallTranscriptFunction
+    - Condition: ShouldInstallCallRecordingFunction
+Resources:
+  SugarSecrets:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: SugarSecrets
+      Description: This secret stores your SugarCRM Credentials using AWS Secrets
+        Manager
+      SecretString:
+        Fn::Sub:
+        - '{"sugarUsername": "${Username}", "sugarPass": "${Password}"}'
+        - Username:
+            Ref: SugarUsername
+          Password:
+            Ref: SugarPassword
+  s3CloudwatchLambdaExecutionRole:
+    Condition: ShouldInstallS3CloudwatchLambdaExecutionRole
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/AmazonS3FullAccess
+      - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      - arn:aws:iam::aws:policy/AWSLambdaExecute
+      - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+  StartChatLambdaExecutionRole:
+    Condition: ShouldInstallStartChatLambdaExecutionRole
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: start-chat-contact-execution-policy
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            Resource:
+            - Fn::Sub: arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*
+          - Effect: Allow
+            Action:
+            - connect:StartChatContact
+            Resource:
+            - Fn::Sub: arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${AmazonConnectInstanceID}
+            - Fn::Sub: arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${AmazonConnectInstanceID}/*
+  CreateCaseFunction:
+    Condition: ShouldInstallCreateCaseFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: A Lambda function that creates a case.
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+          secretManagerName: SugarSecrets
+          sugarUrl:
+            Ref: SugarURL
+      Handler: src/handlers/create-case.createCaseHandler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - CreateCaseFunctionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 100
+    Type: AWS::Lambda::Function
+  CreateCaseFunctionRole:
+    Condition: ShouldInstallCreateCaseFunction
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+    Type: AWS::IAM::Role
+  AddNoteToCaseFunction:
+    Condition: ShouldInstallAddNoteToCaseFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: A Lambda function that adds a note to a case.
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+          secretManagerName: SugarSecrets
+          sugarUrl:
+            Ref: SugarURL
+      Handler: src/handlers/add-note-to-case.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - AddNoteToCaseFunctionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 100
+    Type: AWS::Lambda::Function
+  AddNoteToCaseFunctionRole:
+    Condition: ShouldInstallAddNoteToCaseFunction
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+    Type: AWS::IAM::Role
+  CaseStatusFunction:
+    Condition: ShouldInstallCaseStatusFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: AWS Lambda Function to get case status by case number
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+          secretManagerName: SugarSecrets
+          sugarUrl:
+            Ref: SugarURL
+      Handler: src/handlers/case-status.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - CaseStatusFunctionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 60
+    Type: AWS::Lambda::Function
+  CaseStatusFunctionRole:
+    Condition: ShouldInstallCaseStatusFunction
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+    Type: AWS::IAM::Role
+  LexGetStringFunction:
+    Condition: ShouldInstallLexGetStringFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: AWS Lambda Function to be called by Lex to return whole input
+      Handler: src/handlers/lex-get-string.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - LexGetStringFunctionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 60
+    Type: AWS::Lambda::Function
+  LexGetStringFunctionRole:
+    Condition: ShouldInstallLexGetStringFunction
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+    Type: AWS::IAM::Role
+  SaveCallTranscriptFunction:
+    Condition: ShouldInstallSaveCallTranscriptFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: AWS Lambda Function to save call transcripts based on S3 Trigger
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+          secretManagerName: SugarSecrets
+          sugarUrl:
+            Ref: SugarURL
+      Handler: src/handlers/save-transcript.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - s3CloudwatchLambdaExecutionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 60
+    Type: AWS::Lambda::Function
+  CallRecordingFunction:
+    Condition: ShouldInstallCallRecordingFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: AWS Lambda Function to perform actions on the call recording
+      Environment:
+        Variables:
+          region:
+            Ref: AWS::Region
+          secretManagerName: SugarSecrets
+          sugarUrl:
+            Ref: SugarURL
+          awsConnectInstance:
+            Ref: AWSConnectInstanceName
+          awsConnectDomain:
+            Ref: AWSConnectDomain
+          callRecordingPartialUrl:
+            Ref: CallRecordingPartialURL
+      Handler: src/handlers/call-recording.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - s3CloudwatchLambdaExecutionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 60
+    Type: AWS::Lambda::Function
+  StartChatFunction:
+    Condition: ShouldInstallStartChatFunction
+    Properties:
+      Code:
+        S3Bucket:
+          Ref: InstallationS3BucketName
+        S3Key:
+          Ref: InstallationFile
+      Description: AWS Lambda Function to start chat from incoming API call
+      Environment:
+        Variables:
+          instanceId:
+            Ref: AmazonConnectInstanceID
+          contactFlowId:
+            Ref: ContactFlowID
+      Handler: src/handlers/start-chat.handler
+      MemorySize: 128
+      Role:
+        Fn::GetAtt:
+        - StartChatLambdaExecutionRole
+        - Arn
+      Runtime: nodejs12.x
+      Tags:
+      - Key: lambda:createdBy
+        Value: SAM
+      Timeout: 60
+    Type: AWS::Lambda::Function
+  StartChatFunctionGetRootPermissionProd:
+    Condition: ShouldInstallStartChatFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Ref: StartChatFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Sub:
+        - arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${__ApiId__}/${__Stage__}/POST/
+        - __ApiId__:
+            Ref: StartChatApiGateway
+          __Stage__: '*'
+    Type: AWS::Lambda::Permission
+  StartChatApiGateway:
+    Condition: ShouldInstallStartChatApiGateway
+    Properties:
+      Body:
+        info:
+          title:
+            Ref: AWS::StackName
+          version: '1.0'
+        paths:
+          /:
+            Fn::If:
+            - ShouldInstallStartChatFunction
+            - post:
+                Fn::If:
+                - ShouldInstallStartChatFunction
+                - responses: {}
+                  x-amazon-apigateway-integration:
+                    httpMethod: POST
+                    type: aws_proxy
+                    uri:
+                      Fn::If:
+                      - ShouldInstallStartChatFunction
+                      - Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${StartChatFunction.Arn}/invocations
+                      - Ref: AWS::NoValue
+                - Ref: AWS::NoValue
+            - Ref: AWS::NoValue
+        swagger: '2.0'
+    Type: AWS::ApiGateway::RestApi
+  StartChatApiGatewayDeployment30864220fa:
+    Condition: ShouldInstallStartChatApiGateway
+    Properties:
+      Description: 'RestApi deployment id: 30864220fa7a9a17da1ba16fbab42eec50e15b7b'
+      RestApiId:
+        Ref: StartChatApiGateway
+      StageName: Stage
+    Type: AWS::ApiGateway::Deployment
+  StartChatApiGatewayProdStage:
+    Condition: ShouldInstallStartChatApiGateway
+    Properties:
+      DeploymentId:
+        Ref: StartChatApiGatewayDeployment30864220fa
+      RestApiId:
+        Ref: StartChatApiGateway
+      StageName: Prod
+    Type: AWS::ApiGateway::Stage
