@@ -9,9 +9,15 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-module.exports = { 
+module.exports = {
     /**
      * Error messages
      */
-    ERROR_MULTIPLE_CALL_RECORDS_IN_RESPONSE: 'Unable to match to exactly one Call record'
+    ERROR_CANNOT_CREATE_CASE: 'Unable to create Case in SugarCRM',
+    ERROR_NOTE_CREATE_FAILED: 'Unable to link Note to Case in SugarCRM',
+
+    TPL_CANNOT_MATCH_RECORD: 'Unable to match exactly one ${} record',
+    TPL_MISSING_REQUIRED_PARAMETERS: 'Missing required parameters: ${}',
+    TPL_MULTIPLE_RECORDS_MATCHED: 'Matched multiple ${} records',
+    TPL_NO_RECORDS_MATCHED: 'Unable to match any ${} records'
 };

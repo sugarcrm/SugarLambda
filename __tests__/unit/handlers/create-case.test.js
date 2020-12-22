@@ -11,6 +11,8 @@
 
 // Import all functions from createCase.js
 const lambda = require('../../../src/handlers/create-case.js');
+// Defined Constants
+const SuccessMessages = require('../../../src/constants/messages/success');
 
 // Mock bean.js
 jest.mock('../../../src/core/bean.js', () => () => ({
@@ -46,7 +48,8 @@ describe('Test for create-case', function() {
         const expectedResult = {
             statusCode: 200,
             caseId: 1,
-            caseNumber: 1
+            caseNumber: 1,
+            body: SuccessMessages.LAMBDA_FUNCTION_SUCCESS
         };
         // Compare the result with the expected result
         expect(result).toEqual(expectedResult);

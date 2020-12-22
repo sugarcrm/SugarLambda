@@ -9,9 +9,11 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 let { startChatContact, buildResponseFailed, buildSuccessfulResponse } = require('../utils/aws/chat-utils');
+let loggerUtils = require('../utils/logger-utils');
 
 exports.handler = (event, context, callback) => {
-    console.log('Received event: ' + JSON.stringify(event));
+    // Log incoming API gateway event to cloudwatch for debugging
+    loggerUtils.logAPIGatewayEvent(event);
     let body = JSON.parse(event['body']);
 
     startChatContact(body).then((startChatResult) => {

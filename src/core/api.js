@@ -12,6 +12,7 @@
 const axios = require('axios');
 
 const { HttpStatus } = require('../constants/http-status.js');
+const loggerUtils = require('../utils/logger-utils');
 const { Secrets } = require('../utils/aws/secrets');
 
 const methodToRequest = {
@@ -61,7 +62,9 @@ module.exports = () => {
                     request.params = params;
                 }
                 response = await axios(request);
+
                 if (response.data) {
+                    loggerUtils.logSugarApiResponse(response.data);
                     return {
                         status: HttpStatus.ok,
                         data: response.data

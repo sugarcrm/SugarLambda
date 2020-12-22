@@ -9,11 +9,9 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-let Bean = require('./bean.js');
-
 module.exports = {
-    createBean: (module, data) => {
-        let bean = Bean(module, data || {});
-        return bean;
-    }
+    /**
+     * Success messages
+     */
+    LAMBDA_FUNCTION_SUCCESS: 'Lambda Function Completed Successfully'
 };

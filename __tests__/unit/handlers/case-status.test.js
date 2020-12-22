@@ -13,6 +13,8 @@
 const app = require('../../../src/core/app');
 const lambda = require('../../../src/handlers/case-status');
 
+const SuccessMessages = require('../../../src/constants/messages/success');
+
 describe('Test for case-status', function() {
     test.each([
         [1, 'cid', { data: { records: [{ id: 1, status: 'good' }] } }, true],
@@ -32,13 +34,17 @@ describe('Test for case-status', function() {
             mockApi.mockReturnValue(apiResponse);
             app.api.call = mockApi;
             let result = await lambda.handler(evt);
-            let expected = matched ? {
-                statusCode: 200,
-                caseId: 1,
-                caseStatus: 'good'
-            } : {
-                statusCode: 404
-            };
+            let expected = matched
+                ? {
+                    statusCode: 200,
+                    caseId: 1,
+                    caseStatus: 'good',
+                    body: SuccessMessages.LAMBDA_FUNCTION_SUCCESS
+                }
+                : {
+                    statusCode: 404,
+                    body: 'Unable to match exactly one Case record'
+                };
             expect(result).toEqual(expected);
         });
 });

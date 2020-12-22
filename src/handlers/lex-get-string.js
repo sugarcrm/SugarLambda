@@ -9,6 +9,8 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
+const loggerUtils = require('../utils/logger-utils');
+
 /**
  * Close dialog with the customer, reporting fulfillmentState Fulfilled
  * @param sessionAttributes
@@ -22,10 +24,10 @@ function close(sessionAttributes, fulfillmentState, message) {
             type: 'Close',
             fulfillmentState,
             message
-        },
+        }
     };
 }
- 
+
 /**
  * Events
  * @param intentRequest
@@ -33,10 +35,10 @@ function close(sessionAttributes, fulfillmentState, message) {
  */
 function dispatch(intentRequest, callback) {
     const sessionAttributes = intentRequest.sessionAttributes;
-    
+
     // assign the whole user input to sessionAttributes.string
     sessionAttributes.string = intentRequest.inputTranscript;
-    
+
     callback(
         close(
             sessionAttributes,
@@ -44,12 +46,12 @@ function dispatch(intentRequest, callback) {
             {
                 'contentType': 'PlainText',
                 'content': 'You entered: ' + sessionAttributes.string
-                
+
             }
         )
     );
 }
- 
+
 /**
  * Main handler
  * @param event
@@ -57,6 +59,8 @@ function dispatch(intentRequest, callback) {
  * @param callback
  */
 exports.handler = (event, context, callback) => {
+    // Log Lex Event to cloudwatch for debugging
+    loggerUtils.logLexEvent(event);
     try {
         dispatch(event,
             (response) => {
@@ -66,4 +70,3 @@ exports.handler = (event, context, callback) => {
         callback(err);
     }
 };
-
