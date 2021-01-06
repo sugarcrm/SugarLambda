@@ -22,7 +22,7 @@ const methodToRequest = {
 };
 
 module.exports = () => {
-    const serverUrl = (process.env.sugarUrl || 'localhost') + '/rest/v11_10';
+    const serverUrl = (process.env.sugarUrl || 'localhost') + '/rest/v11_11';
 
     return {
         serverUrl: serverUrl,
