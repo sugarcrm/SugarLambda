@@ -1,0 +1,151 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: >
+  SugarCRM Portal Chat AWS Cloud Formation Template
+
+Mappings:
+  LambdaMap:
+    Layer:
+      S3Path: 'sugar/lambda/layers/'                        # The S3 path to Lambda Layer files
+      ChatSDKLayerS3Key: 'aws-connect-chat-sdk.zip'         # The S3 key of the AWS Connect Chat SDK
+    Function:
+      S3Path: 'sugar/lambda/functions/'                     # The S3 path to Lambda Function files
+      StartChatLambdaS3Key: 'aws-connect-start-chat.zip'    # The S3 key of AWS Connect start chat Lambda
+  RuntimeMap:
+    Node:
+      12x: 'nodejs12.x'
+
+Parameters:
+  lambdaS3Bucket:
+    Type: String
+    Description: > 
+      The S3 bucket name for Lambda resources required by this template.
+      The bucket must be in the region as this CloudFormation stack
+  awsConnectInstanceId:
+    Type: String
+    Description: > 
+      The ID of the AWS Connect Instance
+    AllowedPattern: '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'
+  awsConnectContactFlowId:
+    Type: String
+    Description: > 
+      The ID of the AWS Connect Contact Flow that will be used for Sugar Portal Chat
+    AllowedPattern: '\w{8}-\w{4}-\w{4}-\w{4}-\w{12}'
+
+Resources:
+  #### Lambda #####
+  AwsConnectChatSDKLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - !FindInMap [RuntimeMap, Node, 12x]
+      Content:
+        S3Bucket: !Ref lambdaS3Bucket
+        S3Key:
+          !Join
+            - ''
+            - - !FindInMap [LambdaMap, Layer, S3Path]
+              - !FindInMap [LambdaMap, Layer, ChatSDKLayerS3Key]
+      Description: >
+        The Lambda layer for AWS Connect Chat
+  AwsConnectStartChatLambda:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Description: AWS Lambda Function to initiate the chat with the end user
+      Handler: 'awsConnectStartChatContact.handler' #todo: update with Lambda function name
+      Role: !GetAtt AwsConnectStartChatLambdaExecutionRole.Arn
+      Runtime: !FindInMap [RuntimeMap, Node, 12x]
+      MemorySize: 128
+      Timeout: 30
+      Layers:
+        - !Ref AwsConnectChatSDKLayer
+      Environment:
+        Variables:
+          INSTANCE_ID: !Ref awsConnectInstanceId
+          CONTACT_FLOW_ID: !Ref awsConnectContactFlowId
+      Code:
+        S3Bucket: !Ref lambdaS3Bucket
+        S3Key:
+          !Join
+            - ''
+            - - !FindInMap [LambdaMap, Function, S3Path]
+              - !FindInMap [LambdaMap, Function, StartChatLambdaS3Key]
+  AwsConnectStartChatLambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: 'Allow'
+            Principal:
+              Service:
+                - 'lambda.amazonaws.com'
+            Action:
+              - 'sts:AssumeRole'
+      Path: '/'
+      Policies:
+        - PolicyName: aws-connect-start-chat-execution-policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: 'Allow' # Grant write access to CloudWatch logs
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/*'
+              - Effect: 'Allow' # Grant access to start a new chat in AWS Connect
+                Action:
+                  - 'connect:StartChatContact'
+                Resource:
+                  - !Sub 'arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${awsConnectInstanceId}'
+                  - !Sub 'arn:${AWS::Partition}:connect:${AWS::Region}:${AWS::AccountId}:instance/${awsConnectInstanceId}/*'
+
+  #### API Gateway #####
+  AwsConnectChatRestApi:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: 'AwsConnectChatRestApi'
+      Description: >
+        REST API to initiate chat with AWS Connect
+  LambdaApiGatewayInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt AwsConnectStartChatLambda.Arn
+      Principal: 'apigateway.amazonaws.com'
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${AwsConnectChatRestApi}/*'
+  ApiGatewayDeployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn:
+      - ApiGatewayRootMethod
+    Properties:
+      RestApiId: !Ref AwsConnectChatRestApi
+      StageName: 'Prod'
+  ApiGatewayRootMethod:
+    Type: AWS::ApiGateway::Method
+    DependsOn: LambdaApiGatewayInvokePermission
+    Properties:
+      AuthorizationType: 'NONE'
+      HttpMethod: 'POST'
+      Integration:
+        IntegrationHttpMethod: 'POST'
+        Type: 'AWS_PROXY'
+        Uri: !Sub
+          - 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations'
+          - lambdaArn: !GetAtt AwsConnectStartChatLambda.Arn
+        PassthroughBehavior: WHEN_NO_MATCH
+      ResourceId:  !GetAtt AwsConnectChatRestApi.RootResourceId
+      RestApiId: !Ref AwsConnectChatRestApi
+      MethodResponses:
+        - StatusCode: '200'
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          ResponseModels:
+            application/json: Empty
+        - StatusCode: '500'
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: true
+          ResponseModels:
+            application/json: Empty
