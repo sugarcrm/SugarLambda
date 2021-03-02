@@ -16,7 +16,7 @@
 // Load the AWS SDK
 let AWS = require('aws-sdk');
 let region = process.env.region;
-let secretName = process.env.secretManagerName;
+let secretArn = process.env.secretManagerArn;
 let secret;
 
 // Create a Secrets Manager client
@@ -29,7 +29,7 @@ let client = new AWS.SecretsManager({
  * await the resolution of `client.getSecretValue` in `app.api.call`.
  */
 const secretPromise = new Promise((resolve, reject) => {
-    client.getSecretValue({ SecretId: secretName }, function(err, data) {
+    client.getSecretValue({ SecretId: secretArn }, function(err, data) {
         if (err) {
             reject(err);
         } else {
