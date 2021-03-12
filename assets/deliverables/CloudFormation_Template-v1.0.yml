@@ -134,7 +134,6 @@ Resources:
   SugarSecrets:
     Type: AWS::SecretsManager::Secret
     Properties:
-      Name: SugarSecrets
       Description: This secret stores your SugarCRM Credentials using AWS Secrets
         Manager
       SecretString:
@@ -208,7 +207,8 @@ Resources:
         Variables:
           region:
             Ref: AWS::Region
-          secretManagerName: SugarSecrets
+          secretManagerArn:
+            Ref: SugarSecrets
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/create-case.createCaseHandler
@@ -255,7 +255,8 @@ Resources:
         Variables:
           region:
             Ref: AWS::Region
-          secretManagerName: SugarSecrets
+          secretManagerArn:
+            Ref: SugarSecrets
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/add-note-to-case.handler
@@ -302,7 +303,8 @@ Resources:
         Variables:
           region:
             Ref: AWS::Region
-          secretManagerName: SugarSecrets
+          secretManagerArn:
+            Ref: SugarSecrets
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/case-status.handler
@@ -388,7 +390,8 @@ Resources:
         Variables:
           region:
             Ref: AWS::Region
-          secretManagerName: SugarSecrets
+          secretManagerArn:
+            Ref: SugarSecrets
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/save-transcript.handler
@@ -416,7 +419,8 @@ Resources:
         Variables:
           region:
             Ref: AWS::Region
-          secretManagerName: SugarSecrets
+          secretManagerArn:
+            Ref: SugarSecrets
           sugarUrl:
             Ref: SugarURL
           awsConnectInstance:
