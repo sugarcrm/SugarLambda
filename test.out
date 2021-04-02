@@ -1,0 +1,860 @@
+[32mSTART RequestId: 04fc2642-38e1-1de6-322e-6663e338a2f8 Version: $LATEST[0m
+2021-04-05T19:48:41.289Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	S3 Event:
+ {"Records":[{"eventVersion":"2.1","eventSource":"aws:s3","awsRegion":"us-east-1","eventTime":"2020-10-26T18:25:55.516Z","eventName":"ObjectCreated:Put","userIdentity":{"principalId":"AWS:AIDA5CCDZW4MRSCLDY7UR"},"requestParameters":{"sourceIPAddress":"68.73.117.169"},"responseElements":{"x-amz-request-id":"6392D2FE18F780C1","x-amz-id-2":"lJ45peuTi9s5Ffx7K6uljzZjySzgtGK38tKxiInIIL3QgumvIgEhFgdbwpbkGuGHEarfh8r8blscrtzc0hpoiwCPcVWJituMA+jgbaXS+rw="},"s3":{"s3SchemaVersion":"1.0","configurationId":"transcriptNotifyEvent","bucket":{"name":"connect-6a8d34621f87","ownerIdentity":{"principalId":"AW0EZPYKZ1NJM"},"arn":"arn:aws:s3:::connect-6a8d34621f87"},"object":{"key":"connect/jwelborn-sugar/ChatTranscripts/2021/04/01/cs-1625.json","size":34442,"eTag":"8f3fe4ffaa7410d8a315901cd3295339","sequencer":"005F9714B51413EDF5"}}}]}
+2021-04-05T19:48:41.342Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	fetching s3 bucket object
+ {
+  Bucket: 'connect-6a8d34621f87',
+  Key: 'connect/jwelborn-sugar/ChatTranscripts/2021/04/01/cs-1625.json'
+}
+2021-04-05T19:48:41.630Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	Fetched Chat transcript: 
+ {
+  Version: '2019-08-26',
+  AWSAccountId: '897790359321',
+  InstanceId: '403a85fe-dd62-4e10-94ca-00691c35cf31',
+  InitialContactId: 'cb9f841a-e3d1-427e-949c-f251aab26593',
+  ContactId: 'cb9f841a-e3d1-427e-949c-f251aab26593',
+  Participants: [
+    { ParticipantId: 'c0f5a9be-ab9a-4336-bb0a-0065a9858141' },
+    { ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32' },
+    { ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981' }
+  ],
+  Transcript: [
+    {
+      ContentType: 'application/vnd.amazonaws.connect.event.participant.joined',
+      Id: '8df83ca6-694c-4c82-b2a8-32bc4b76da5c',
+      DisplayName: 'June Arends',
+      Type: 'EVENT',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:05:18.000Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'Hello June Arends, you can ask for any of the following options. At any time during our conversation, type “connect to an agent” to speak with an agent.',
+      Id: '553018fa-54bd-40b7-9581-b7298e54b0ad',
+      DisplayName: 'SYSTEM_MESSAGE',
+      Type: 'MESSAGE',
+      ParticipantRole: 'SYSTEM',
+      AbsoluteTime: '2021-04-01T16:05:24.080Z',
+      ParticipantId: 'c0f5a9be-ab9a-4336-bb0a-0065a9858141'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'a. Check case status\nb. Open a case\nc. Connect to an agent',
+      Id: '44254420-619d-4460-80a2-9240ac3d241e',
+      DisplayName: 'BOT',
+      Type: 'MESSAGE',
+      ParticipantRole: 'SYSTEM',
+      AbsoluteTime: '2021-04-01T16:05:25.496Z',
+      ParticipantId: 'c0f5a9be-ab9a-4336-bb0a-0065a9858141'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'c',
+      Id: '43c89a19-9cdb-4f4c-baf0-f35437d9ab4d',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:05:28.956Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'One moment while I transfer you to an agent',
+      Id: '02151d91-155f-4818-9a6a-fe9df37298bb',
+      DisplayName: 'SYSTEM_MESSAGE',
+      Type: 'MESSAGE',
+      ParticipantRole: 'SYSTEM',
+      AbsoluteTime: '2021-04-01T16:05:29.907Z',
+      ParticipantId: 'c0f5a9be-ab9a-4336-bb0a-0065a9858141'
+    },
+    {
+      ContentType: 'application/vnd.amazonaws.connect.event.participant.joined',
+      Id: '35b877c9-894c-458c-a0dc-fb77acb39d9f',
+      DisplayName: 'Jay',
+      Type: 'EVENT',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:05:46.187Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: "Hello. I'm Jay. How are you?",
+      Id: 'cad966d4-2581-4eb0-a9a5-cffcce1f3945',
+      DisplayName: 'Jay',
+      Type: 'MESSAGE',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:05:56.249Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: "I'm Neutral",
+      Id: '1e36b9b0-203b-46a7-a3b0-dcbcf1e663c4',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:06:00.066Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'What can I help you with today?',
+      Id: '1adfa39a-d4e6-47e0-a6de-c7b622a8cc23',
+      DisplayName: 'Jay',
+      Type: 'MESSAGE',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:06:07.268Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'I hate everything',
+      Id: '39f02a0e-17fa-43c7-b34f-1ecf104b7888',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:06:12.749Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: "That's bad. bad bad bad.",
+      Id: 'e2ac8326-2709-4953-bdf1-e9e3e71057f4',
+      DisplayName: 'Jay',
+      Type: 'MESSAGE',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:06:18.721Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: "I feel very bad, so yes it's bad",
+      Id: 'f63ae8d7-6f3b-42b8-b10a-beb33153715b',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:06:24.377Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: "Let's help you feel good",
+      Id: 'dcd4a7c7-fceb-4891-a572-8bbc76951370',
+      DisplayName: 'Jay',
+      Type: 'MESSAGE',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:06:31.311Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: "You're right. Now my mood is good. I have good sentiment now",
+      Id: '2c5d94b8-880a-41e1-b89e-1f408c1b852f',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:06:43.155Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'great!',
+      Id: '85ede309-3368-45f3-9e36-bfffbb61abe0',
+      DisplayName: 'Jay',
+      Type: 'MESSAGE',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:06:47.573Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'Awesome!',
+      Id: '0c788436-502c-4f74-b004-ffb0f5a89546',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:06:51.510Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'Have a wonderful day!',
+      Id: 'b64966c9-46ca-4009-8d27-91a5e350f10a',
+      DisplayName: 'Jay',
+      Type: 'MESSAGE',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:06:56.614Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'text/plain',
+      Content: 'You, too!',
+      Id: '37f54dc4-0fd3-4d9c-93ae-ff3582be5fc7',
+      DisplayName: 'June Arends',
+      Type: 'MESSAGE',
+      ParticipantRole: 'CUSTOMER',
+      AbsoluteTime: '2021-04-01T16:07:00.667Z',
+      ParticipantId: '24926a0a-0cc0-4304-9837-66d5c80de981'
+    },
+    {
+      ContentType: 'application/vnd.amazonaws.connect.event.participant.left',
+      Id: '303cbdab-7479-43d7-8a2c-a44a08a0d1c6',
+      DisplayName: 'Jay',
+      Type: 'EVENT',
+      ParticipantRole: 'AGENT',
+      AbsoluteTime: '2021-04-01T16:07:02.640Z',
+      ParticipantId: '4938ebf5-87cd-4643-be7d-ea69c40dff32'
+    },
+    {
+      ContentType: 'application/vnd.amazonaws.connect.event.chat.ended',
+      Id: '8acb13c5-9af0-4df8-ad5d-45a4dd6bba81',
+      Type: 'EVENT',
+      AbsoluteTime: '2021-04-01T16:07:03.113Z'
+    }
+  ]
+}
+2021-04-05T19:48:41.632Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	Batch Transcript: 
+{
+  "SYSTEM": [
+    "Hello June Arends, you can ask for any of the following options. At any time during our conversation, type “connect to an agent” to speak with an agent.",
+    "a. Check case status\nb. Open a case\nc. Connect to an agent",
+    "One moment while I transfer you to an agent"
+  ],
+  "CUSTOMER": [
+    "c",
+    "I'm Neutral",
+    "I hate everything",
+    "I feel very bad, so yes it's bad",
+    "You're right. Now my mood is good. I have good sentiment now",
+    "Awesome!",
+    "You, too!"
+  ],
+  "AGENT": [
+    "Hello. I'm Jay. How are you?",
+    "What can I help you with today?",
+    "That's bad. bad bad bad.",
+    "Let's help you feel good",
+    "great!",
+    "Have a wonderful day!"
+  ]
+}
+2021-04-05T19:48:42.265Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	Batch Sentiment: 
+{
+  "SYSTEM": {
+    "ResultList": [
+      {
+        "Index": 0,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.0058188047260046005,
+          "Negative": 0.0010089969728142023,
+          "Neutral": 0.9931451082229614,
+          "Mixed": 0.000027074227546108887
+        }
+      },
+      {
+        "Index": 1,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.0019366665510460734,
+          "Negative": 0.0006877416162751615,
+          "Neutral": 0.9960210919380188,
+          "Mixed": 0.0013545090332627296
+        }
+      },
+      {
+        "Index": 2,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.014800638891756535,
+          "Negative": 0.09416309744119644,
+          "Neutral": 0.8777685761451721,
+          "Mixed": 0.013267655856907368
+        }
+      }
+    ],
+    "ErrorList": []
+  },
+  "CUSTOMER": {
+    "ResultList": [
+      {
+        "Index": 0,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.018922552466392517,
+          "Negative": 0.009631780907511711,
+          "Neutral": 0.9685011506080627,
+          "Mixed": 0.002944499719887972
+        }
+      },
+      {
+        "Index": 1,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.2900281846523285,
+          "Negative": 0.13631005585193634,
+          "Neutral": 0.42907989025115967,
+          "Mixed": 0.14458191394805908
+        }
+      },
+      {
+        "Index": 2,
+        "Sentiment": "NEGATIVE",
+        "SentimentScore": {
+          "Positive": 0.0020088888704776764,
+          "Negative": 0.9648305177688599,
+          "Neutral": 0.013185071758925915,
+          "Mixed": 0.01997554302215576
+        }
+      },
+      {
+        "Index": 3,
+        "Sentiment": "NEGATIVE",
+        "SentimentScore": {
+          "Positive": 0.012144580483436584,
+          "Negative": 0.7949589490890503,
+          "Neutral": 0.05103641003370285,
+          "Mixed": 0.1418600082397461
+        }
+      },
+      {
+        "Index": 4,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9262439608573914,
+          "Negative": 0.014655733481049538,
+          "Neutral": 0.05061717331409454,
+          "Mixed": 0.008483098819851875
+        }
+      },
+      {
+        "Index": 5,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9987894892692566,
+          "Negative": 0.00009838599362410605,
+          "Neutral": 0.001059722970239818,
+          "Mixed": 0.00005245766442385502
+        }
+      },
+      {
+        "Index": 6,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.3896481394767761,
+          "Negative": 0.03036423586308956,
+          "Neutral": 0.5686144232749939,
+          "Mixed": 0.011373193934559822
+        }
+      }
+    ],
+    "ErrorList": []
+  },
+  "AGENT": {
+    "ResultList": [
+      {
+        "Index": 0,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.006751580163836479,
+          "Negative": 0.003329167841002345,
+          "Neutral": 0.9898989796638489,
+          "Mixed": 0.000020353880245238543
+        }
+      },
+      {
+        "Index": 1,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.03641185164451599,
+          "Negative": 0.011785134673118591,
+          "Neutral": 0.9516445994377136,
+          "Mixed": 0.0001584958954481408
+        }
+      },
+      {
+        "Index": 2,
+        "Sentiment": "NEGATIVE",
+        "SentimentScore": {
+          "Positive": 0.0040274010971188545,
+          "Negative": 0.8493797779083252,
+          "Neutral": 0.010669576935470104,
+          "Mixed": 0.13592329621315002
+        }
+      },
+      {
+        "Index": 3,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.7275978326797485,
+          "Negative": 0.011485238559544086,
+          "Neutral": 0.25572991371154785,
+          "Mixed": 0.00518703693524003
+        }
+      },
+      {
+        "Index": 4,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9861124157905579,
+          "Negative": 0.0010366304777562618,
+          "Neutral": 0.008829280734062195,
+          "Mixed": 0.004021638538688421
+        }
+      },
+      {
+        "Index": 5,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9986422657966614,
+          "Negative": 0.00009393101936439052,
+          "Neutral": 0.0012134845601394773,
+          "Mixed": 0.00005032903209212236
+        }
+      }
+    ],
+    "ErrorList": []
+  }
+}
+2021-04-05T19:48:42.267Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	String Transcript: 
+{
+  "SYSTEM": "Hello June Arends, you can ask for any of the following options. At any time during our conversation, type “connect to an agent” to speak with an agent. a. Check case status\nb. Open a case\nc. Connect to an agent One moment while I transfer you to an agent",
+  "CUSTOMER": "c I'm Neutral I hate everything I feel very bad, so yes it's bad You're right. Now my mood is good. I have good sentiment now Awesome! You, too!",
+  "AGENT": "Hello. I'm Jay. How are you? What can I help you with today? That's bad. bad bad bad. Let's help you feel good great! Have a wonderful day!"
+}
+2021-04-05T19:48:42.767Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	String Sentiment: 
+{
+  "SYSTEM": {
+    "Sentiment": "NEUTRAL",
+    "SentimentScore": {
+      "Positive": 0.004293158184736967,
+      "Negative": 0.0004029140982311219,
+      "Neutral": 0.9952658414840698,
+      "Mixed": 0.00003813313742284663
+    }
+  },
+  "CUSTOMER": {
+    "Sentiment": "POSITIVE",
+    "SentimentScore": {
+      "Positive": 0.577345073223114,
+      "Negative": 0.03792358189821243,
+      "Neutral": 0.05582113564014435,
+      "Mixed": 0.328910231590271
+    }
+  },
+  "AGENT": {
+    "Sentiment": "POSITIVE",
+    "SentimentScore": {
+      "Positive": 0.8708688616752625,
+      "Negative": 0.05541711673140526,
+      "Neutral": 0.06771305948495865,
+      "Mixed": 0.006000882480293512
+    }
+  }
+}
+2021-04-05T19:48:42.768Z	04fc2642-38e1-1de6-322e-6663e338a2f8	INFO	Annotated Transcript: 
+{
+  "Version": "2019-08-26",
+  "AWSAccountId": "897790359321",
+  "InstanceId": "403a85fe-dd62-4e10-94ca-00691c35cf31",
+  "InitialContactId": "cb9f841a-e3d1-427e-949c-f251aab26593",
+  "ContactId": "cb9f841a-e3d1-427e-949c-f251aab26593",
+  "Participants": [
+    {
+      "ParticipantId": "c0f5a9be-ab9a-4336-bb0a-0065a9858141"
+    },
+    {
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32"
+    },
+    {
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981"
+    }
+  ],
+  "Transcript": [
+    {
+      "ContentType": "application/vnd.amazonaws.connect.event.participant.joined",
+      "Id": "8df83ca6-694c-4c82-b2a8-32bc4b76da5c",
+      "DisplayName": "June Arends",
+      "Type": "EVENT",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:05:18.000Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981"
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "Hello June Arends, you can ask for any of the following options. At any time during our conversation, type “connect to an agent” to speak with an agent.",
+      "Id": "553018fa-54bd-40b7-9581-b7298e54b0ad",
+      "DisplayName": "SYSTEM_MESSAGE",
+      "Type": "MESSAGE",
+      "ParticipantRole": "SYSTEM",
+      "AbsoluteTime": "2021-04-01T16:05:24.080Z",
+      "ParticipantId": "c0f5a9be-ab9a-4336-bb0a-0065a9858141",
+      "Sentiment": {
+        "Index": 0,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.0058188047260046005,
+          "Negative": 0.0010089969728142023,
+          "Neutral": 0.9931451082229614,
+          "Mixed": 0.000027074227546108887
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "a. Check case status\nb. Open a case\nc. Connect to an agent",
+      "Id": "44254420-619d-4460-80a2-9240ac3d241e",
+      "DisplayName": "BOT",
+      "Type": "MESSAGE",
+      "ParticipantRole": "SYSTEM",
+      "AbsoluteTime": "2021-04-01T16:05:25.496Z",
+      "ParticipantId": "c0f5a9be-ab9a-4336-bb0a-0065a9858141",
+      "Sentiment": {
+        "Index": 1,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.0019366665510460734,
+          "Negative": 0.0006877416162751615,
+          "Neutral": 0.9960210919380188,
+          "Mixed": 0.0013545090332627296
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "c",
+      "Id": "43c89a19-9cdb-4f4c-baf0-f35437d9ab4d",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:05:28.956Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 0,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.018922552466392517,
+          "Negative": 0.009631780907511711,
+          "Neutral": 0.9685011506080627,
+          "Mixed": 0.002944499719887972
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "One moment while I transfer you to an agent",
+      "Id": "02151d91-155f-4818-9a6a-fe9df37298bb",
+      "DisplayName": "SYSTEM_MESSAGE",
+      "Type": "MESSAGE",
+      "ParticipantRole": "SYSTEM",
+      "AbsoluteTime": "2021-04-01T16:05:29.907Z",
+      "ParticipantId": "c0f5a9be-ab9a-4336-bb0a-0065a9858141",
+      "Sentiment": {
+        "Index": 2,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.014800638891756535,
+          "Negative": 0.09416309744119644,
+          "Neutral": 0.8777685761451721,
+          "Mixed": 0.013267655856907368
+        }
+      }
+    },
+    {
+      "ContentType": "application/vnd.amazonaws.connect.event.participant.joined",
+      "Id": "35b877c9-894c-458c-a0dc-fb77acb39d9f",
+      "DisplayName": "Jay",
+      "Type": "EVENT",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:05:46.187Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32"
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "Hello. I'm Jay. How are you?",
+      "Id": "cad966d4-2581-4eb0-a9a5-cffcce1f3945",
+      "DisplayName": "Jay",
+      "Type": "MESSAGE",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:05:56.249Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32",
+      "Sentiment": {
+        "Index": 0,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.006751580163836479,
+          "Negative": 0.003329167841002345,
+          "Neutral": 0.9898989796638489,
+          "Mixed": 0.000020353880245238543
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "I'm Neutral",
+      "Id": "1e36b9b0-203b-46a7-a3b0-dcbcf1e663c4",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:06:00.066Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 1,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.2900281846523285,
+          "Negative": 0.13631005585193634,
+          "Neutral": 0.42907989025115967,
+          "Mixed": 0.14458191394805908
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "What can I help you with today?",
+      "Id": "1adfa39a-d4e6-47e0-a6de-c7b622a8cc23",
+      "DisplayName": "Jay",
+      "Type": "MESSAGE",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:06:07.268Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32",
+      "Sentiment": {
+        "Index": 1,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.03641185164451599,
+          "Negative": 0.011785134673118591,
+          "Neutral": 0.9516445994377136,
+          "Mixed": 0.0001584958954481408
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "I hate everything",
+      "Id": "39f02a0e-17fa-43c7-b34f-1ecf104b7888",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:06:12.749Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 2,
+        "Sentiment": "NEGATIVE",
+        "SentimentScore": {
+          "Positive": 0.0020088888704776764,
+          "Negative": 0.9648305177688599,
+          "Neutral": 0.013185071758925915,
+          "Mixed": 0.01997554302215576
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "That's bad. bad bad bad.",
+      "Id": "e2ac8326-2709-4953-bdf1-e9e3e71057f4",
+      "DisplayName": "Jay",
+      "Type": "MESSAGE",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:06:18.721Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32",
+      "Sentiment": {
+        "Index": 2,
+        "Sentiment": "NEGATIVE",
+        "SentimentScore": {
+          "Positive": 0.0040274010971188545,
+          "Negative": 0.8493797779083252,
+          "Neutral": 0.010669576935470104,
+          "Mixed": 0.13592329621315002
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "I feel very bad, so yes it's bad",
+      "Id": "f63ae8d7-6f3b-42b8-b10a-beb33153715b",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:06:24.377Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 3,
+        "Sentiment": "NEGATIVE",
+        "SentimentScore": {
+          "Positive": 0.012144580483436584,
+          "Negative": 0.7949589490890503,
+          "Neutral": 0.05103641003370285,
+          "Mixed": 0.1418600082397461
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "Let's help you feel good",
+      "Id": "dcd4a7c7-fceb-4891-a572-8bbc76951370",
+      "DisplayName": "Jay",
+      "Type": "MESSAGE",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:06:31.311Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32",
+      "Sentiment": {
+        "Index": 3,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.7275978326797485,
+          "Negative": 0.011485238559544086,
+          "Neutral": 0.25572991371154785,
+          "Mixed": 0.00518703693524003
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "You're right. Now my mood is good. I have good sentiment now",
+      "Id": "2c5d94b8-880a-41e1-b89e-1f408c1b852f",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:06:43.155Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 4,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9262439608573914,
+          "Negative": 0.014655733481049538,
+          "Neutral": 0.05061717331409454,
+          "Mixed": 0.008483098819851875
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "great!",
+      "Id": "85ede309-3368-45f3-9e36-bfffbb61abe0",
+      "DisplayName": "Jay",
+      "Type": "MESSAGE",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:06:47.573Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32",
+      "Sentiment": {
+        "Index": 4,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9861124157905579,
+          "Negative": 0.0010366304777562618,
+          "Neutral": 0.008829280734062195,
+          "Mixed": 0.004021638538688421
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "Awesome!",
+      "Id": "0c788436-502c-4f74-b004-ffb0f5a89546",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:06:51.510Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 5,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9987894892692566,
+          "Negative": 0.00009838599362410605,
+          "Neutral": 0.001059722970239818,
+          "Mixed": 0.00005245766442385502
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "Have a wonderful day!",
+      "Id": "b64966c9-46ca-4009-8d27-91a5e350f10a",
+      "DisplayName": "Jay",
+      "Type": "MESSAGE",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:06:56.614Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32",
+      "Sentiment": {
+        "Index": 5,
+        "Sentiment": "POSITIVE",
+        "SentimentScore": {
+          "Positive": 0.9986422657966614,
+          "Negative": 0.00009393101936439052,
+          "Neutral": 0.0012134845601394773,
+          "Mixed": 0.00005032903209212236
+        }
+      }
+    },
+    {
+      "ContentType": "text/plain",
+      "Content": "You, too!",
+      "Id": "37f54dc4-0fd3-4d9c-93ae-ff3582be5fc7",
+      "DisplayName": "June Arends",
+      "Type": "MESSAGE",
+      "ParticipantRole": "CUSTOMER",
+      "AbsoluteTime": "2021-04-01T16:07:00.667Z",
+      "ParticipantId": "24926a0a-0cc0-4304-9837-66d5c80de981",
+      "Sentiment": {
+        "Index": 6,
+        "Sentiment": "NEUTRAL",
+        "SentimentScore": {
+          "Positive": 0.3896481394767761,
+          "Negative": 0.03036423586308956,
+          "Neutral": 0.5686144232749939,
+          "Mixed": 0.011373193934559822
+        }
+      }
+    },
+    {
+      "ContentType": "application/vnd.amazonaws.connect.event.participant.left",
+      "Id": "303cbdab-7479-43d7-8a2c-a44a08a0d1c6",
+      "DisplayName": "Jay",
+      "Type": "EVENT",
+      "ParticipantRole": "AGENT",
+      "AbsoluteTime": "2021-04-01T16:07:02.640Z",
+      "ParticipantId": "4938ebf5-87cd-4643-be7d-ea69c40dff32"
+    },
+    {
+      "ContentType": "application/vnd.amazonaws.connect.event.chat.ended",
+      "Id": "8acb13c5-9af0-4df8-ad5d-45a4dd6bba81",
+      "Type": "EVENT",
+      "AbsoluteTime": "2021-04-01T16:07:03.113Z"
+    }
+  ],
+  "SYSTEM_SENTIMENT": {
+    "Sentiment": "NEUTRAL",
+    "SentimentScore": {
+      "Positive": 0.004293158184736967,
+      "Negative": 0.0004029140982311219,
+      "Neutral": 0.9952658414840698,
+      "Mixed": 0.00003813313742284663
+    }
+  },
+  "CUSTOMER_SENTIMENT": {
+    "Sentiment": "POSITIVE",
+    "SentimentScore": {
+      "Positive": 0.577345073223114,
+      "Negative": 0.03792358189821243,
+      "Neutral": 0.05582113564014435,
+      "Mixed": 0.328910231590271
+    }
+  },
+  "AGENT_SENTIMENT": {
+    "Sentiment": "POSITIVE",
+    "SentimentScore": {
+      "Positive": 0.8708688616752625,
+      "Negative": 0.05541711673140526,
+      "Neutral": 0.06771305948495865,
+      "Mixed": 0.006000882480293512
+    }
+  }
+}
+[32mEND RequestId: 04fc2642-38e1-1de6-322e-6663e338a2f8[0m
+[32mREPORT RequestId: 04fc2642-38e1-1de6-322e-6663e338a2f8	Init Duration: 4491.33 ms	Duration: 1492.92 ms	Billed Duration: 1500 ms	Memory Size: 128 MB	Max Memory Used: 61 MB	[0m
+
+{"Version":"2019-08-26","AWSAccountId":"897790359321","InstanceId":"403a85fe-dd62-4e10-94ca-00691c35cf31","InitialContactId":"cb9f841a-e3d1-427e-949c-f251aab26593","ContactId":"cb9f841a-e3d1-427e-949c-f251aab26593","Participants":[{"ParticipantId":"c0f5a9be-ab9a-4336-bb0a-0065a9858141"},{"ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32"},{"ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981"}],"Transcript":[{"ContentType":"application/vnd.amazonaws.connect.event.participant.joined","Id":"8df83ca6-694c-4c82-b2a8-32bc4b76da5c","DisplayName":"June Arends","Type":"EVENT","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:05:18.000Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981"},{"ContentType":"text/plain","Content":"Hello June Arends, you can ask for any of the following options. At any time during our conversation, type “connect to an agent” to speak with an agent.","Id":"553018fa-54bd-40b7-9581-b7298e54b0ad","DisplayName":"SYSTEM_MESSAGE","Type":"MESSAGE","ParticipantRole":"SYSTEM","AbsoluteTime":"2021-04-01T16:05:24.080Z","ParticipantId":"c0f5a9be-ab9a-4336-bb0a-0065a9858141","Sentiment":{"Index":0,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.0058188047260046005,"Negative":0.0010089969728142023,"Neutral":0.9931451082229614,"Mixed":0.000027074227546108887}}},{"ContentType":"text/plain","Content":"a. Check case status\nb. Open a case\nc. Connect to an agent","Id":"44254420-619d-4460-80a2-9240ac3d241e","DisplayName":"BOT","Type":"MESSAGE","ParticipantRole":"SYSTEM","AbsoluteTime":"2021-04-01T16:05:25.496Z","ParticipantId":"c0f5a9be-ab9a-4336-bb0a-0065a9858141","Sentiment":{"Index":1,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.0019366665510460734,"Negative":0.0006877416162751615,"Neutral":0.9960210919380188,"Mixed":0.0013545090332627296}}},{"ContentType":"text/plain","Content":"c","Id":"43c89a19-9cdb-4f4c-baf0-f35437d9ab4d","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:05:28.956Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":0,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.018922552466392517,"Negative":0.009631780907511711,"Neutral":0.9685011506080627,"Mixed":0.002944499719887972}}},{"ContentType":"text/plain","Content":"One moment while I transfer you to an agent","Id":"02151d91-155f-4818-9a6a-fe9df37298bb","DisplayName":"SYSTEM_MESSAGE","Type":"MESSAGE","ParticipantRole":"SYSTEM","AbsoluteTime":"2021-04-01T16:05:29.907Z","ParticipantId":"c0f5a9be-ab9a-4336-bb0a-0065a9858141","Sentiment":{"Index":2,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.014800638891756535,"Negative":0.09416309744119644,"Neutral":0.8777685761451721,"Mixed":0.013267655856907368}}},{"ContentType":"application/vnd.amazonaws.connect.event.participant.joined","Id":"35b877c9-894c-458c-a0dc-fb77acb39d9f","DisplayName":"Jay","Type":"EVENT","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:05:46.187Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32"},{"ContentType":"text/plain","Content":"Hello. I'm Jay. How are you?","Id":"cad966d4-2581-4eb0-a9a5-cffcce1f3945","DisplayName":"Jay","Type":"MESSAGE","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:05:56.249Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32","Sentiment":{"Index":0,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.006751580163836479,"Negative":0.003329167841002345,"Neutral":0.9898989796638489,"Mixed":0.000020353880245238543}}},{"ContentType":"text/plain","Content":"I'm Neutral","Id":"1e36b9b0-203b-46a7-a3b0-dcbcf1e663c4","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:06:00.066Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":1,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.2900281846523285,"Negative":0.13631005585193634,"Neutral":0.42907989025115967,"Mixed":0.14458191394805908}}},{"ContentType":"text/plain","Content":"What can I help you with today?","Id":"1adfa39a-d4e6-47e0-a6de-c7b622a8cc23","DisplayName":"Jay","Type":"MESSAGE","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:06:07.268Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32","Sentiment":{"Index":1,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.03641185164451599,"Negative":0.011785134673118591,"Neutral":0.9516445994377136,"Mixed":0.0001584958954481408}}},{"ContentType":"text/plain","Content":"I hate everything","Id":"39f02a0e-17fa-43c7-b34f-1ecf104b7888","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:06:12.749Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":2,"Sentiment":"NEGATIVE","SentimentScore":{"Positive":0.0020088888704776764,"Negative":0.9648305177688599,"Neutral":0.013185071758925915,"Mixed":0.01997554302215576}}},{"ContentType":"text/plain","Content":"That's bad. bad bad bad.","Id":"e2ac8326-2709-4953-bdf1-e9e3e71057f4","DisplayName":"Jay","Type":"MESSAGE","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:06:18.721Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32","Sentiment":{"Index":2,"Sentiment":"NEGATIVE","SentimentScore":{"Positive":0.0040274010971188545,"Negative":0.8493797779083252,"Neutral":0.010669576935470104,"Mixed":0.13592329621315002}}},{"ContentType":"text/plain","Content":"I feel very bad, so yes it's bad","Id":"f63ae8d7-6f3b-42b8-b10a-beb33153715b","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:06:24.377Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":3,"Sentiment":"NEGATIVE","SentimentScore":{"Positive":0.012144580483436584,"Negative":0.7949589490890503,"Neutral":0.05103641003370285,"Mixed":0.1418600082397461}}},{"ContentType":"text/plain","Content":"Let's help you feel good","Id":"dcd4a7c7-fceb-4891-a572-8bbc76951370","DisplayName":"Jay","Type":"MESSAGE","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:06:31.311Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32","Sentiment":{"Index":3,"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.7275978326797485,"Negative":0.011485238559544086,"Neutral":0.25572991371154785,"Mixed":0.00518703693524003}}},{"ContentType":"text/plain","Content":"You're right. Now my mood is good. I have good sentiment now","Id":"2c5d94b8-880a-41e1-b89e-1f408c1b852f","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:06:43.155Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":4,"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.9262439608573914,"Negative":0.014655733481049538,"Neutral":0.05061717331409454,"Mixed":0.008483098819851875}}},{"ContentType":"text/plain","Content":"great!","Id":"85ede309-3368-45f3-9e36-bfffbb61abe0","DisplayName":"Jay","Type":"MESSAGE","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:06:47.573Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32","Sentiment":{"Index":4,"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.9861124157905579,"Negative":0.0010366304777562618,"Neutral":0.008829280734062195,"Mixed":0.004021638538688421}}},{"ContentType":"text/plain","Content":"Awesome!","Id":"0c788436-502c-4f74-b004-ffb0f5a89546","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:06:51.510Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":5,"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.9987894892692566,"Negative":0.00009838599362410605,"Neutral":0.001059722970239818,"Mixed":0.00005245766442385502}}},{"ContentType":"text/plain","Content":"Have a wonderful day!","Id":"b64966c9-46ca-4009-8d27-91a5e350f10a","DisplayName":"Jay","Type":"MESSAGE","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:06:56.614Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32","Sentiment":{"Index":5,"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.9986422657966614,"Negative":0.00009393101936439052,"Neutral":0.0012134845601394773,"Mixed":0.00005032903209212236}}},{"ContentType":"text/plain","Content":"You, too!","Id":"37f54dc4-0fd3-4d9c-93ae-ff3582be5fc7","DisplayName":"June Arends","Type":"MESSAGE","ParticipantRole":"CUSTOMER","AbsoluteTime":"2021-04-01T16:07:00.667Z","ParticipantId":"24926a0a-0cc0-4304-9837-66d5c80de981","Sentiment":{"Index":6,"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.3896481394767761,"Negative":0.03036423586308956,"Neutral":0.5686144232749939,"Mixed":0.011373193934559822}}},{"ContentType":"application/vnd.amazonaws.connect.event.participant.left","Id":"303cbdab-7479-43d7-8a2c-a44a08a0d1c6","DisplayName":"Jay","Type":"EVENT","ParticipantRole":"AGENT","AbsoluteTime":"2021-04-01T16:07:02.640Z","ParticipantId":"4938ebf5-87cd-4643-be7d-ea69c40dff32"},{"ContentType":"application/vnd.amazonaws.connect.event.chat.ended","Id":"8acb13c5-9af0-4df8-ad5d-45a4dd6bba81","Type":"EVENT","AbsoluteTime":"2021-04-01T16:07:03.113Z"}],"SYSTEM_SENTIMENT":{"Sentiment":"NEUTRAL","SentimentScore":{"Positive":0.004293158184736967,"Negative":0.0004029140982311219,"Neutral":0.9952658414840698,"Mixed":0.00003813313742284663}},"CUSTOMER_SENTIMENT":{"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.577345073223114,"Negative":0.03792358189821243,"Neutral":0.05582113564014435,"Mixed":0.328910231590271}},"AGENT_SENTIMENT":{"Sentiment":"POSITIVE","SentimentScore":{"Positive":0.8708688616752625,"Negative":0.05541711673140526,"Neutral":0.06771305948495865,"Mixed":0.006000882480293512}}}
