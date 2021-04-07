@@ -238,6 +238,21 @@ Resources:
           region: !Ref AWS::Region
           secretManagerArn: !Ref SugarSecrets
           sugarUrl: !Ref SugarURL
+  
+  GetChatSentimentFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: AWS Lambda Function to get chat sentiments
+      Handler: 'src/handlers/chat-sentiment.handler'
+      Runtime: 'nodejs12.x'
+      MemorySize: 128
+      Role: !GetAtt s3CloudwatchLambdaExecutionRole.Arn
+      Timeout: 60
+      Environment:
+        Variables:
+          region: !Ref AWS::Region
+          secretManagerArn: !Ref SugarSecrets
+          sugarUrl: !Ref SugarURL
 
   CallRecordingFunction:
     Condition: ShouldInstallCallRecordingFunction
@@ -295,6 +310,10 @@ Resources:
                 - "lambda.amazonaws.com"
             Action:
               - "sts:AssumeRole"
+          - Effect: "Allow"
+            Action:
+              - "comprehend:BatchDetectSentiment"
+            Resource: "*"
       Path: "/"
       ManagedPolicyArns:
         - "arn:aws:iam::aws:policy/AmazonS3FullAccess"

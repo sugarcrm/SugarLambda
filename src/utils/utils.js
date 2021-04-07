@@ -23,4 +23,47 @@ function processTranscript(transcript) {
     return processedTranscript.trim();
 }
 
-module.exports = { processTranscript };
+/**
+ * Process raw transcript to group messages by Participant
+ *
+ * @param {Object} transcript JSON representing a chat transcript
+ * @returns {Object} mapping of conversation participant to an array of utterances
+ */
+function batchTrancsriptByParticipant(transcript) {
+    let groupedMessages = {};
+    transcript.Transcript.forEach((statement) => {
+        if (!('Content' in statement)) {
+            return;
+        };
+        let role = statement.ParticipantRole;
+        if (!(role in groupedMessages)) {
+            groupedMessages[role] = [];
+        }
+        groupedMessages[role].push(statement.Content);
+    });
+    return groupedMessages;
+}
+
+/**
+ * Process raw transcript to group messages by participant, and combine messages into a single
+ * string.
+ *
+ * @param {Object} transcript JSON representing a chat transcript
+ * @returns {Object} mapping of conversation participant to string with combined utterances
+ */
+function stringTranscriptByParticipant(transcript) {
+    let groupedMessages = {};
+    transcript.Transcript.forEach((statement) => {
+        if (!('Content' in statement)) {
+            return;
+        };
+        let role = statement.ParticipantRole;
+        if (!(role in groupedMessages)) {
+            groupedMessages[role] = '';
+        }
+        groupedMessages[role] = `${groupedMessages[role]} ${statement.Content}`.trim();
+    });
+    return groupedMessages;
+}
+
+module.exports = { processTranscript, batchTrancsriptByParticipant, stringTranscriptByParticipant };
