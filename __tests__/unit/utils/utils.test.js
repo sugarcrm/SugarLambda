@@ -32,3 +32,51 @@ Goodbye.';
         expect(actual).toEqual(expected);
     });
 });
+
+describe('getOverallScore', function() {
+    test.each([
+        [
+            'AGENT', 2.5
+        ],
+        [
+            'CUSTOMER', 3.5
+        ]
+    ])('should build the call recording URL', (type, expected) => {
+        const { transcript } = require('../../fixtures/transcript.json');
+        const actual = util.getOverallScore(transcript, type);
+        expect(actual).toEqual(expected);
+    });
+});
+
+describe('getQuarterlyScore', function() {
+    test.each([
+        [
+            'AGENT', 0, 1
+        ],
+        [
+            'AGENT', 1, 2
+        ],
+        [
+            'AGENT', 2, 3
+        ],
+        [
+            'AGENT', 3, 4
+        ],
+        [
+            'CUSTOMER', 0, 2
+        ],
+        [
+            'CUSTOMER', 1, 3
+        ],
+        [
+            'CUSTOMER', 2, 4
+        ],
+        [
+            'CUSTOMER', 3, 5
+        ]
+    ])('should build the call recording URL', (type, quarter, expected) => {
+        const { transcript } = require('../../fixtures/transcript.json');
+        const actual = util.getQuarterlyScore(transcript, type, quarter);
+        expect(actual).toEqual(expected);
+    });
+});

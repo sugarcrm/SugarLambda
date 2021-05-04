@@ -26,8 +26,8 @@
         "TotalConversationDurationMillis": 24100,
         "Sentiment": {
           "OverallSentiment": {
-            "AGENT": 0,
-            "CUSTOMER": 0
+            "AGENT": 2.5,
+            "CUSTOMER": 3.5
           },
           "SentimentByPeriod": {
             "QUARTER": {
@@ -35,44 +35,44 @@
                 {
                   "BeginOffsetMillis": 0,
                   "EndOffsetMillis": 5325,
-                  "Score": 0
+                  "Score": 1
                 },
                 {
                   "BeginOffsetMillis": 5325,
                   "EndOffsetMillis": 10650,
-                  "Score": 0
+                  "Score": 2
                 },
                 {
                   "BeginOffsetMillis": 10650,
                   "EndOffsetMillis": 15975,
-                  "Score": 0
+                  "Score": 3
                 },
                 {
                   "BeginOffsetMillis": 15975,
                   "EndOffsetMillis": 21300,
-                  "Score": 0
+                  "Score": 4
                 }
               ],
               "CUSTOMER": [
                 {
                   "BeginOffsetMillis": 0,
                   "EndOffsetMillis": 6025,
-                  "Score": 0
+                  "Score": 2
                 },
                 {
                   "BeginOffsetMillis": 6025,
                   "EndOffsetMillis": 12050,
-                  "Score": 0
+                  "Score": 3
                 },
                 {
                   "BeginOffsetMillis": 12050,
                   "EndOffsetMillis": 18075,
-                  "Score": 0
+                  "Score": 4
                 },
                 {
                   "BeginOffsetMillis": 18075,
                   "EndOffsetMillis": 24100,
-                  "Score": 0
+                  "Score": 5
                 }
               ]
             }
