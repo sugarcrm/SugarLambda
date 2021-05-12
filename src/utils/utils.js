@@ -23,4 +23,26 @@ function processTranscript(transcript) {
     return processedTranscript.trim();
 }
 
-module.exports = { processTranscript };
+/**
+ * Get Overall sentiment score for given type
+ *
+ * @param transcript
+ * @param type AGENT or CUSTOMER
+ * @returns {number|string}
+ */
+function getOverallScore(transcript, type) {
+    return Number(transcript.ConversationCharacteristics.Sentiment.OverallSentiment[type]);
+}
+
+/**
+ * Get quarter sentiment score for given type and quarter
+ * @param transcript
+ * @param type AGENT or CUSTOMER
+ * @param quarter
+ * @returns {number|string}
+ */
+function getQuarterlyScore(transcript, type, quarter) {
+    return Number(transcript.ConversationCharacteristics.Sentiment.SentimentByPeriod.QUARTER[type][quarter].Score);
+}
+
+module.exports = { processTranscript,  getOverallScore, getQuarterlyScore};

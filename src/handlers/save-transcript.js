@@ -38,7 +38,8 @@ const handler = async (event) => {
 
     // Fetch and process transcript from s3
     const transcript = await s3Utils.getJsonFromS3Event(event);
-    console.log('Fetched transcript: \n', transcript);
+    console.log('Fetched Transcript: \n', transcript.Transcript);
+    console.log('Fetched Sentiment: \n', transcript.ConversationCharacteristics.Sentiment);
     const processedTranscript = utils.processTranscript(transcript);
 
     // Fetch related call record from Sugar
@@ -57,6 +58,19 @@ const handler = async (event) => {
     // Update call record with readable transcript, return the result
     let callBean = app.data.createBean('Calls', callRecord);
     callBean.set(CallsConstants.CALLS_TRANSCRIPT, processedTranscript);
+
+    // update sentiment fields
+    callBean.set(CallsConstants.CALLS_AWS_LENS_DATA, JSON.stringify(transcript));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_AGENT, utils.getOverallScore(transcript, 'AGENT'));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_CUSTOMER, utils.getOverallScore(transcript, 'CUSTOMER'));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_AGENT_Q1, utils.getQuarterlyScore(transcript, 'AGENT', 0));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_AGENT_Q2, utils.getQuarterlyScore(transcript, 'AGENT', 1));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_AGENT_Q3, utils.getQuarterlyScore(transcript, 'AGENT', 2));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_AGENT_Q4, utils.getQuarterlyScore(transcript, 'AGENT', 3));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_CUSTOMER_Q1, utils.getQuarterlyScore(transcript, 'CUSTOMER', 0));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_CUSTOMER_Q2, utils.getQuarterlyScore(transcript, 'CUSTOMER', 1));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_CUSTOMER_Q3, utils.getQuarterlyScore(transcript, 'CUSTOMER', 2));
+    callBean.set(CallsConstants.CALLS_SENTIMENT_SCORE_CUSTOMER_Q4, utils.getQuarterlyScore(transcript, 'CUSTOMER', 3));
 
     return await callBean.save();
 };
