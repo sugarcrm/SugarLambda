@@ -12,8 +12,7 @@ Metadata:
         default: Sugar Instance
       Parameters:
       - SugarURL
-      - SugarUsername
-      - SugarPassword
+      - SugarSecretARN
     - Label:
         default: Sugar Portal Chat
       Parameters:
@@ -62,14 +61,9 @@ Parameters:
     AllowedValues:
     - true
     - false
-  SugarUsername:
+  SugarSecretARN:
     Type: String
-    Description: The Sugar user that Lambda will use to access Sugar. This user should
-      have the privileges required to perform the necessary actions in Sugar (e.g.
-      update call records to save the call recording URL).
-  SugarPassword:
-    Type: String
-    Description: The password of the specified Sugar user.
+    Description: The ARN of the secret that holds credentials to the SugarCRM instance.
   SugarURL:
     Type: String
     Description: The URL of your Sugar instance.
@@ -131,18 +125,6 @@ Conditions:
     - Condition: ShouldInstallSaveCallTranscriptFunction
     - Condition: ShouldInstallCallRecordingFunction
 Resources:
-  SugarSecrets:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Description: This secret stores your SugarCRM Credentials using AWS Secrets
-        Manager
-      SecretString:
-        Fn::Sub:
-        - '{"sugarUsername": "${Username}", "sugarPass": "${Password}"}'
-        - Username:
-            Ref: SugarUsername
-          Password:
-            Ref: SugarPassword
   s3CloudwatchLambdaExecutionRole:
     Condition: ShouldInstallS3CloudwatchLambdaExecutionRole
     Type: AWS::IAM::Role
@@ -208,7 +190,7 @@ Resources:
           region:
             Ref: AWS::Region
           secretManagerArn:
-            Ref: SugarSecrets
+            Ref: SugarSecretARN
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/create-case.createCaseHandler
@@ -256,7 +238,7 @@ Resources:
           region:
             Ref: AWS::Region
           secretManagerArn:
-            Ref: SugarSecrets
+            Ref: SugarSecretARN
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/add-note-to-case.handler
@@ -304,7 +286,7 @@ Resources:
           region:
             Ref: AWS::Region
           secretManagerArn:
-            Ref: SugarSecrets
+            Ref: SugarSecretARN
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/case-status.handler
@@ -391,7 +373,7 @@ Resources:
           region:
             Ref: AWS::Region
           secretManagerArn:
-            Ref: SugarSecrets
+            Ref: SugarSecretARN
           sugarUrl:
             Ref: SugarURL
       Handler: src/handlers/save-transcript.handler
@@ -420,7 +402,7 @@ Resources:
           region:
             Ref: AWS::Region
           secretManagerArn:
-            Ref: SugarSecrets
+            Ref: SugarSecretARN
           sugarUrl:
             Ref: SugarURL
           awsConnectInstance:
