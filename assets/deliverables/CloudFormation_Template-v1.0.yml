@@ -63,11 +63,13 @@ Parameters:
     - true
     - false
   SugarUsername:
+    NoEcho: true
     Type: String
     Description: The Sugar user that Lambda will use to access Sugar. This user should
       have the privileges required to perform the necessary actions in Sugar (e.g.
       update call records to save the call recording URL).
   SugarPassword:
+    NoEcho: true
     Type: String
     Description: The password of the specified Sugar user.
   SugarURL:
