@@ -24,8 +24,7 @@ Metadata:
           default: Sugar Instance
         Parameters:
           - SugarURL
-          - SugarUsername
-          - SugarPassword
+          - SugarSecretARN
       - Label:
           default: Sugar Portal Chat
         Parameters:
@@ -78,15 +77,9 @@ Parameters:
     AllowedValues:
     - true
     - false
-  SugarUsername:
+  SugarSecretARN:
     Type: String
-    Description: >-
-      The Sugar user that Lambda will use to access Sugar. This user should have the privileges
-      required to perform the necessary actions in Sugar (e.g. update call records to save the
-      call recording URL).
-  SugarPassword:
-    Type: String
-    Description: The password of the specified Sugar user.
+    Description: The ARN of the secret that holds credentials to your Sugar instance.
   SugarURL:
     Type: String
     Description: The URL of your Sugar instance.
@@ -140,15 +133,6 @@ Resources:
   # Each Lambda function is defined by properties:
   # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
 
-  # Secrets Manager Secret to store Sugar Username/Password
-  SugarSecrets:
-    Type: AWS::SecretsManager::Secret
-    Properties:
-      Description: This secret stores your SugarCRM Credentials using AWS Secrets Manager
-      SecretString: !Sub 
-        - '{"sugarUsername": "${Username}", "sugarPass": "${Password}"}'
-        - { Username: !Ref SugarUsername, Password: !Ref SugarPassword }
-
   # This is a Lambda function config associated with the source code: create-case.js
   CreateCaseFunction:
     Condition: ShouldInstallCreateCaseFunction
@@ -161,7 +145,7 @@ Resources:
       Environment:
         Variables:
           region: !Ref AWS::Region
-          secretManagerArn: !Ref SugarSecrets
+          secretManagerArn: !Ref SugarSecretARN
           sugarUrl: !Ref SugarURL
       Description: A Lambda function that creates a case.
       Policies:
@@ -181,7 +165,7 @@ Resources:
       Environment:
         Variables:
           region: !Ref AWS::Region
-          secretManagerArn: !Ref SugarSecrets
+          secretManagerArn: !Ref SugarSecretARN
           sugarUrl: !Ref SugarURL
       Description: A Lambda function that adds a note to a case.
       Policies:
@@ -202,7 +186,7 @@ Resources:
       Environment:
         Variables:
           region: !Ref AWS::Region
-          secretManagerArn: !Ref SugarSecrets
+          secretManagerArn: !Ref SugarSecretARN
           sugarUrl: !Ref SugarURL
       Policies:
         # Give Lambda basic execution Permission to createCase
@@ -236,7 +220,7 @@ Resources:
       Environment:
         Variables:
           region: !Ref AWS::Region
-          secretManagerArn: !Ref SugarSecrets
+          secretManagerArn: !Ref SugarSecretARN
           sugarUrl: !Ref SugarURL
 
   CallRecordingFunction:
@@ -252,7 +236,7 @@ Resources:
       Environment:
         Variables:
           region: !Ref AWS::Region
-          secretManagerArn: !Ref SugarSecrets
+          secretManagerArn: !Ref SugarSecretARN
           sugarUrl: !Ref SugarURL
           awsConnectInstance: !Ref AWSConnectInstanceName
           awsConnectDomain: !Ref AWSConnectDomain
