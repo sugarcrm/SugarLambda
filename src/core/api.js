@@ -42,7 +42,7 @@ module.exports = () => {
                     client_secret: '',
                     username: username,
                     password: password,
-                    platform: ''
+                    platform: 'sugarlambda'
                 });
                 if (!(response && response.data && response.data.access_token)) {
                     return {
