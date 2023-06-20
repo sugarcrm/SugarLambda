@@ -199,7 +199,7 @@ Resources:
         Fn::GetAtt:
         - CreateCaseFunctionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
@@ -247,7 +247,7 @@ Resources:
         Fn::GetAtt:
         - AddNoteToCaseFunctionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
@@ -295,7 +295,7 @@ Resources:
         Fn::GetAtt:
         - CaseStatusFunctionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
@@ -335,7 +335,7 @@ Resources:
         Fn::GetAtt:
         - LexGetStringFunctionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
@@ -382,7 +382,7 @@ Resources:
         Fn::GetAtt:
         - s3CloudwatchLambdaExecutionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
@@ -417,7 +417,7 @@ Resources:
         Fn::GetAtt:
         - s3CloudwatchLambdaExecutionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
@@ -444,7 +444,7 @@ Resources:
         Fn::GetAtt:
         - StartChatLambdaExecutionRole
         - Arn
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       Tags:
       - Key: lambda:createdBy
         Value: SAM
