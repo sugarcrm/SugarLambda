@@ -139,7 +139,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/create-case.createCaseHandler
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       MemorySize: 128
       Timeout: 100
       Environment:
@@ -159,7 +159,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/handlers/add-note-to-case.handler
-      Runtime: nodejs12.x
+      Runtime: nodejs18.x
       MemorySize: 128
       Timeout: 100
       Environment:
@@ -180,7 +180,7 @@ Resources:
     Properties:
       Description: AWS Lambda Function to get case status by case number
       Handler: 'src/handlers/case-status.handler'
-      Runtime: 'nodejs12.x'
+      Runtime: 'nodejs18.x'
       MemorySize: 128
       Timeout: 60
       Environment:
@@ -200,7 +200,7 @@ Resources:
     Properties:
       Description: AWS Lambda Function to be called by Lex to return whole input
       Handler: 'src/handlers/lex-get-string.handler'
-      Runtime: 'nodejs12.x'
+      Runtime: 'nodejs18.x'
       MemorySize: 128
       Timeout: 60
       Policies:
@@ -213,7 +213,7 @@ Resources:
     Properties:
       Description: AWS Lambda Function to save call transcripts based on S3 Trigger
       Handler: 'src/handlers/save-transcript.handler'
-      Runtime: 'nodejs12.x'
+      Runtime: 'nodejs18.x'
       MemorySize: 128
       Role: !GetAtt s3CloudwatchLambdaExecutionRole.Arn
       Timeout: 60
@@ -229,7 +229,7 @@ Resources:
     Properties:
       Description: AWS Lambda Function to perform actions on the call recording
       Handler: 'src/handlers/call-recording.handler'
-      Runtime: 'nodejs12.x'
+      Runtime: 'nodejs18.x'
       MemorySize: 128
       Role: !GetAtt s3CloudwatchLambdaExecutionRole.Arn
       Timeout: 60
@@ -249,7 +249,7 @@ Resources:
     Properties:
       Description: AWS Lambda Function to start chat from incoming API call
       Handler: 'src/handlers/start-chat.handler'
-      Runtime: 'nodejs12.x'
+      Runtime: 'nodejs18.x'
       MemorySize: 128
       Role: !GetAtt StartChatLambdaExecutionRole.Arn
       Timeout: 60
