@@ -8,62 +8,27 @@
  *
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
+exports.handler = async (event) => {
+    const userText = (event.inputTranscript ?? '').toString();
+    const sessionAttributes = { ...(event.sessionState?.sessionAttributes || {}) };
+    sessionAttributes.string = userText;
 
-/**
- * Close dialog with the customer, reporting fulfillmentState Fulfilled
- * @param sessionAttributes
- * @param fulfillmentState
- * @param message
- */
-function close(sessionAttributes, fulfillmentState, message) {
-    return {
-        sessionAttributes,
-        dialogAction: {
-            type: 'Close',
-            fulfillmentState,
-            message
-        },
+    const incomingIntent = event.sessionState?.intent || { name: 'FallbackIntent' };
+    const intent = {
+        ...incomingIntent,
+        state: 'Fulfilled',
     };
-}
- 
-/**
- * Events
- * @param intentRequest
- * @param callback
- */
-function dispatch(intentRequest, callback) {
-    const sessionAttributes = intentRequest.sessionAttributes;
-    
-    // assign the whole user input to sessionAttributes.string
-    sessionAttributes.string = intentRequest.inputTranscript;
-    
-    callback(
-        close(
-            sessionAttributes,
-            'Fulfilled',
-            {
-                'contentType': 'PlainText',
-                'content': 'You entered: ' + sessionAttributes.string
-                
-            }
-        )
-    );
-}
- 
-/**
- * Main handler
- * @param event
- * @param context
- * @param callback
- */
-exports.handler = (event, context, callback) => {
-    try {
-        dispatch(event,
-            (response) => {
-                callback(null, response);
-            });
-    } catch (err) {
-        callback(err);
-    }
-};
 
+    const content = `You entered: ${userText}`.slice(0, 1000);
+    // Responce format Lex V2
+    return {
+        sessionState: {
+            sessionAttributes,
+            dialogAction: { type: 'Close' },
+            intent,
+        },
+        messages: [
+            { contentType: 'PlainText', content }
+        ]
+    };
+};
