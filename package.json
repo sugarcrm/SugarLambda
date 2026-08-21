@@ -6,7 +6,7 @@
   "dependencies": {
     "aws-sdk": "^2.780.0",
     "axios": "^0.21.0",
-    "underscore": "^1.11.0"
+    "underscore": "^1.13.8"
   },
   "devDependencies": {
     "aws-sdk-mock": "^5.1.0",
