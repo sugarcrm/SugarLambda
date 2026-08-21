@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "aws-sdk": "^2.780.0",
+    "aws-sdk": "^2.1693.0",
     "axios": "^0.21.0",
     "underscore": "^1.11.0"
   },
